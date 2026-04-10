@@ -13,9 +13,9 @@ import java.time.LocalDateTime;
 @Builder
 public class ErrorResponse {
 
-    private String message;
-    private HttpStatus error;
-    private Integer status;
-    private LocalDateTime timestamp;
+  private String message;
+  private HttpStatus error;
+  private Integer status;
+  private LocalDateTime timestamp;
 
 }

@@ -1,38 +1,95 @@
 package com.group26.smart_home_system.config;
 
+import com.group26.smart_home_system.security.TokenValidationService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtException;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
+import javax.crypto.spec.SecretKeySpec;
+
 @Configuration
+@EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+  private final String[] PUBLIC_ENDPOINTS = {"/swagger-ui/**", "/v3/api-docs/**",
+      "/swagger-ui.html", "/auth/register", "/auth/login"};
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> auth
-                    .requestMatchers(
-                            "/swagger-ui/**",
-                            "/v3/api-docs/**",
-                            "/swagger-ui.html"
-                    )
-                    .permitAll()
-                    .requestMatchers(HttpMethod.POST, "/users")
-                    .permitAll()
-                    .anyRequest()
-                    .authenticated()
-            );
+  @Value("${jwt.secret}")
+  private String secretKey;
 
-        return http.build();
-    }
+  @Value("${auth.token.invalid}")
+  private String invalidToken;
+
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
+
+  @Bean
+  public JwtDecoder jwtDecoder(TokenValidationService tokenValidationService) {
+    SecretKeySpec secretKeySpec = new SecretKeySpec(secretKey.getBytes(), "HS512");
+
+    NimbusJwtDecoder nimbusJwtDecoder = NimbusJwtDecoder.withSecretKey(secretKeySpec)
+        .macAlgorithm(MacAlgorithm.HS512)
+        .build();
+
+    return token -> {
+
+      Jwt jwt = nimbusJwtDecoder.decode(token);
+
+      if (tokenValidationService.isBlacklisted(jwt.getId())) {
+        throw new JwtException(invalidToken);
+      }
+
+      return jwt;
+    };
+  }
+
+  @Bean
+  public JwtAuthenticationConverter jwtAuthenticationConverter() {
+    JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
+    jwtGrantedAuthoritiesConverter.setAuthorityPrefix("ROLE_");
+
+    JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
+    jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
+    return jwtAuthenticationConverter;
+  }
+
+  @Bean
+  public SecurityFilterChain securityFilterChain(
+      HttpSecurity httpSecurity,
+      JwtDecoder jwtDecoder,
+      CustomAuthenticationEntryPoint customAuthenticationEntryPoint) throws Exception {
+    httpSecurity.csrf(csrf -> csrf.disable())
+        .authorizeHttpRequests(request -> request
+            .requestMatchers(PUBLIC_ENDPOINTS)
+            .permitAll()
+            .anyRequest()
+            .authenticated()
+        )
+        .oauth2ResourceServer(oauth2 -> oauth2
+            .jwt(jwt -> jwt
+                .decoder(jwtDecoder)
+                .jwtAuthenticationConverter(jwtAuthenticationConverter())
+            )
+            .authenticationEntryPoint(customAuthenticationEntryPoint)
+        );
+
+    return httpSecurity.build();
+  }
 
 }
