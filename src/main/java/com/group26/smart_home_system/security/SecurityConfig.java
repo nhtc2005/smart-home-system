@@ -1,6 +1,5 @@
-package com.group26.smart_home_system.config;
+package com.group26.smart_home_system.security;
 
-import com.group26.smart_home_system.security.TokenValidationService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

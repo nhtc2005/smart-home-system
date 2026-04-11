@@ -1,4 +1,4 @@
-package com.group26.smart_home_system.config;
+package com.group26.smart_home_system.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,11 +1,26 @@
 package com.group26.smart_home_system.security;
 
+import com.group26.smart_home_system.entity.InvalidatedToken;
+import com.group26.smart_home_system.repository.InvalidatedTokenRepository;
 import java.time.LocalDateTime;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
-public interface TokenValidationService {
+@Service
+@RequiredArgsConstructor
+public class TokenValidationService {
 
-  boolean isBlacklisted(String jti);
+  private final InvalidatedTokenRepository invalidatedTokenRepository;
 
-  void blacklist(String jti, LocalDateTime expirationTime);
+  public boolean isBlacklisted(String jti) {
+    return invalidatedTokenRepository.existsByJti(jti);
+  }
+
+  public void blacklist(String jti, LocalDateTime expirationTime) {
+    InvalidatedToken invalidatedToken = new InvalidatedToken();
+    invalidatedToken.setJti(jti);
+    invalidatedToken.setExpiredAt(expirationTime);
+    invalidatedTokenRepository.save(invalidatedToken);
+  }
 
 }

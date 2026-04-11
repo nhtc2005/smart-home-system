@@ -9,8 +9,9 @@ import com.group26.smart_home_system.exception.UserAlreadyExistsException;
 import com.group26.smart_home_system.mapper.AuthenticationMapper;
 import com.group26.smart_home_system.repository.InvalidatedTokenRepository;
 import com.group26.smart_home_system.repository.UserRepository;
+import com.group26.smart_home_system.security.CurrentUser;
+import com.group26.smart_home_system.security.JwtTokenProvider;
 import com.group26.smart_home_system.service.AuthenticationService;
-import com.group26.smart_home_system.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -30,8 +31,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
   private final UserRepository userRepository;
   private final InvalidatedTokenRepository invalidatedTokenRepository;
-  private final JwtService jwtService;
+  private final JwtTokenProvider jwtTokenProvider;
   private final PasswordEncoder passwordEncoder;
+  private final CurrentUser currentUser;
   private final AuthenticationMapper authenticationMapper;
 
   @Value("${auth.login.failed}")
@@ -73,8 +75,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
       throw new BadCredentialsException(loginFailed);
     }
 
-    String token = jwtService.generateToken(user.getId(), user.getRole().name());
-    LocalDateTime expiresAt = jwtService.extractExpiration(token).toInstant()
+    String token = jwtTokenProvider.generateToken(user.getId(), user.getRole().name());
+    LocalDateTime expiresAt = jwtTokenProvider.extractExpiration(token).toInstant()
         .atZone(ZoneId.of("Asia/Ho_Chi_Minh")).toLocalDateTime();
     UserResponse userResponse = authenticationMapper.userToUserResponse(user);
     return LoginResponse.builder().token(token).expiresAt(expiresAt).user(userResponse).build();
@@ -97,20 +99,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
   @Override
   public RefreshTokenResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
-    String newToken = jwtService.refreshToken(refreshTokenRequest.getToken());
-    LocalDateTime expiresAt = jwtService.extractExpiration(newToken).toInstant()
+    String newToken = jwtTokenProvider.refreshToken(refreshTokenRequest.getToken());
+    LocalDateTime expiresAt = jwtTokenProvider.extractExpiration(newToken).toInstant()
         .atZone(ZoneId.of("Asia/Ho_Chi_Minh")).toLocalDateTime();
     return RefreshTokenResponse.builder().token(newToken).expiresAt(expiresAt).build();
   }
 
   @Override
   public UserResponse getInfo() throws UnauthorizedException {
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-    Jwt jwt = (Jwt) auth.getPrincipal();
-
-    String sub = jwt.getSubject();
-    Long userId = Long.parseLong(sub);
+    Long userId = currentUser.getUserId();
 
     System.out.println(userId);
 
