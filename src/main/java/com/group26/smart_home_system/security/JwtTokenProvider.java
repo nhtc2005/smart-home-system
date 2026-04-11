@@ -1,6 +1,5 @@
-package com.group26.smart_home_system.security.impl;
+package com.group26.smart_home_system.security;
 
-import com.group26.smart_home_system.security.JwtService;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
@@ -14,7 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-public class JwtServiceImpl implements JwtService {
+public class JwtTokenProvider {
 
   @Value("${jwt.secret}")
   private String secret;
@@ -25,7 +24,6 @@ public class JwtServiceImpl implements JwtService {
   @Value("${jwt.expiration}")
   private long expiration;
 
-  @Override
   public String generateToken(Long userId, String role) {
     try {
       JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
@@ -48,7 +46,6 @@ public class JwtServiceImpl implements JwtService {
     }
   }
 
-  @Override
   public String refreshToken(String token) {
     try {
       SignedJWT oldJwt = SignedJWT.parse(token);
@@ -62,7 +59,6 @@ public class JwtServiceImpl implements JwtService {
     }
   }
 
-  @Override
   public Date extractExpiration(String token) {
     try {
       SignedJWT jwt = SignedJWT.parse(token);
