@@ -1,32 +1,30 @@
-package com.group26.smart_home_system.integration.mqtt.dispatcher;
+package com.group26.smart_home_system.mqtt.dispatcher;
 
 import com.group26.smart_home_system.dto.mqtt.ParsedFeed;
-import com.group26.smart_home_system.integration.mqtt.handler.MessageHandler;
+import com.group26.smart_home_system.mqtt.handler.MessageHandler;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class MessageDispatcher {
 
   private final List<MessageHandler> handlers;
 
-  @Value("${mqtt.unsupported.topic}")
-  private String unsupportedTopic;
-
   public void dispatch(ParsedFeed feed, String payload) {
     for (MessageHandler handler : handlers) {
-      System.out.println("Checking handler: " + handler.getClass().getSimpleName());
-
       if (handler.canHandle(feed)) {
+        log.debug("MQTT message handled by {}", handler.getClass().getSimpleName());
+
         handler.handle(feed, payload);
         return;
       }
     }
 
-    throw new RuntimeException(String.format(unsupportedTopic, feed.getType()));
+    log.warn("No handler found for feed: {}", feed);
   }
 
 }
