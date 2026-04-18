@@ -10,7 +10,7 @@ public interface AuthenticationService {
 
     LoginResponse login(LoginRequest loginRequest);
 
-    LogoutResponse logout();
+    void logout();
 
     RefreshTokenResponse refreshToken(RefreshTokenRequest refreshTokenRequest);
 
