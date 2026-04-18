@@ -2,13 +2,11 @@ package com.group26.smart_home_system.entity;
 
 import com.group26.smart_home_system.enums.Role;
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
@@ -19,7 +17,7 @@ import java.time.LocalDateTime;
 public class User {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @EqualsAndHashCode.Include
   private Long id;
 
@@ -42,8 +40,11 @@ public class User {
   @Enumerated(EnumType.STRING)
   private Role role;
 
-  @Column(name = "created_at", nullable = false, updatable = false)
+  @Column(name = "created_at", nullable = false)
   @CreationTimestamp
-  private LocalDateTime createdAt;
+  private Instant createdAt;
+
+  @OneToMany(mappedBy="user", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Location> locations = new ArrayList<>();
 
 }
