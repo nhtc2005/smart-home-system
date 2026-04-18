@@ -36,7 +36,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         "message", message,
         "error", "401 UNAUTHORIZED",
         "status", 401,
-        "timestamp", Instant.now()
+        "timestamp", Instant.now().toString()
     );
 
     httpServletResponse.setContentType("application/json");
