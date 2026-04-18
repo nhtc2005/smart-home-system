@@ -2,8 +2,6 @@ package com.group26.smart_home_system.dto.auth;
 
 import lombok.*;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
 @ToString
@@ -12,7 +10,6 @@ import java.time.LocalDateTime;
 @Builder
 public class RegisterResponse {
 
-  private String message;
   private Long id;
 
 }

@@ -9,12 +9,12 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class SensorData {
+public class SensorDataPayload {
 
   private Long deviceId;
   private Long sensorId;
-  private SensorType sensorType;
   private String name;
+  private SensorType sensorType;
   private Double value;
   private String unit;
 

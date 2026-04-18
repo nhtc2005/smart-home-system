@@ -1,9 +1,8 @@
 package com.group26.smart_home_system.dto.common;
 
+import java.time.Instant;
 import lombok.*;
 import org.springframework.http.HttpStatus;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -16,6 +15,6 @@ public class ErrorResponse {
   private String message;
   private HttpStatus error;
   private Integer status;
-  private LocalDateTime timestamp;
+  private Instant timestamp;
 
 }

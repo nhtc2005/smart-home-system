@@ -2,14 +2,9 @@ package com.group26.smart_home_system.dto.device;
 
 import com.group26.smart_home_system.dto.actuator.ActuatorResponse;
 import com.group26.smart_home_system.dto.sensor.SensorResponse;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 @Getter
 @Setter
@@ -17,15 +12,14 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class DeviceResponse {
+public class DeviceDetailedResponse {
 
   private Long id;
-  private String name;
-  private String deviceCode;
   private String locationName;
-  private LocalDateTime createdAt;
-  private LocalDateTime lastSeen;
-
+  private String deviceCode;
+  private String name;
+  private Instant createdAt;
+  private Instant lastSeen;
   private List<ActuatorResponse> actuators;
   private List<SensorResponse> sensors;
 

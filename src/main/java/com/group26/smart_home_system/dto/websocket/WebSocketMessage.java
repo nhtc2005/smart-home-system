@@ -1,5 +1,7 @@
 package com.group26.smart_home_system.dto.websocket;
 
+import com.group26.smart_home_system.enums.WebSocketEventType;
+import java.time.Instant;
 import lombok.*;
 
 @Getter
@@ -10,9 +12,8 @@ import lombok.*;
 @Builder
 public class WebSocketMessage<T> {
 
-  private String type;
-  private Long deviceId;
-  private Long timestamp;
+  private WebSocketEventType type;
+  private Instant timestamp;
   private T payload;
 
 }

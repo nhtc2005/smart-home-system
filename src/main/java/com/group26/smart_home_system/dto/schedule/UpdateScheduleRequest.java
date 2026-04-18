@@ -1,17 +1,22 @@
 package com.group26.smart_home_system.dto.schedule;
 
-import java.time.LocalDateTime;
+import com.group26.smart_home_system.enums.ActuatorState;
+import com.group26.smart_home_system.enums.ScheduleMode;
 import java.time.LocalTime;
 import java.util.List;
-import lombok.Data;
+import lombok.*;
 
-@Data
-public class UpdateScheduleResponse {
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+public class UpdateScheduleRequest {
 
-  private Integer id;
-  private String action;
+  private Long id;
+  private ScheduleMode mode;
+  private List<Integer> days;
   private LocalTime time;
-  private String mode;
-  private List<Integer> days; // 0-6
+  private ActuatorState action;
 
 }
