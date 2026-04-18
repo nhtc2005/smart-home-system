@@ -1,6 +1,6 @@
 package com.group26.smart_home_system.dto.auth;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import lombok.*;
 
 @Getter
@@ -12,6 +12,6 @@ import lombok.*;
 public class RefreshTokenResponse {
 
   private String token;
-  LocalDateTime expiresAt;
+  private Instant expiresAt;
 
 }

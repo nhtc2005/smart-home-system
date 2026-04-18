@@ -19,39 +19,41 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthenticationController {
 
-    private final AuthenticationService authenticationService;
+  private final AuthenticationService authenticationService;
 
-    @PostMapping("/register")
-    public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest registerRequest) throws UserAlreadyExistsException {
-        RegisterResponse registerResponse = authenticationService.register(registerRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(registerResponse);
-    }
+  @PostMapping("/register")
+  public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest registerRequest)
+      throws UserAlreadyExistsException {
+    RegisterResponse registerResponse = authenticationService.register(registerRequest);
+    return ResponseEntity.status(HttpStatus.CREATED).body(registerResponse);
+  }
 
-    @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
-        LoginResponse loginResponse = authenticationService.login(loginRequest);
-        return ResponseEntity.status(HttpStatus.OK).body(loginResponse);
-    }
+  @PostMapping("/login")
+  public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
+    LoginResponse loginResponse = authenticationService.login(loginRequest);
+    return ResponseEntity.ok(loginResponse);
+  }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    @PostMapping("/logout")
-    public ResponseEntity<LogoutResponse> logout() {
-        LogoutResponse logoutResponse = authenticationService.logout();
-        return ResponseEntity.status(HttpStatus.OK).body(logoutResponse);
-    }
+  @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+  @PostMapping("/logout")
+  public ResponseEntity<?> logout() {
+    authenticationService.logout();
+    return ResponseEntity.status(HttpStatus.OK).build();
+  }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    @PostMapping("/refresh")
-    public ResponseEntity<RefreshTokenResponse> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) {
-        RefreshTokenResponse refreshTokenResponse = authenticationService.refreshToken(refreshTokenRequest);
-        return ResponseEntity.status(HttpStatus.OK).body(refreshTokenResponse);
-    }
+  @PostMapping("/refresh")
+  public ResponseEntity<RefreshTokenResponse> refreshToken(
+      @RequestBody RefreshTokenRequest refreshTokenRequest) {
+    RefreshTokenResponse refreshTokenResponse = authenticationService.refreshToken(
+        refreshTokenRequest);
+    return ResponseEntity.ok(refreshTokenResponse);
+  }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    @GetMapping("/me")
-    public ResponseEntity<UserResponse> getInfo() throws UnauthorizedException {
-        UserResponse userResponse = authenticationService.getInfo();
-        return ResponseEntity.status(HttpStatus.OK).body(userResponse);
-    }
+  @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+  @GetMapping("/me")
+  public ResponseEntity<UserResponse> getInfo() throws UnauthorizedException {
+    UserResponse userResponse = authenticationService.getInfo();
+    return ResponseEntity.ok(userResponse);
+  }
 
 }

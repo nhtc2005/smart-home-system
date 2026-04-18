@@ -15,4 +15,5 @@ public class CurrentUser {
 
     return Long.parseLong(jwt.getSubject());
   }
+
 }

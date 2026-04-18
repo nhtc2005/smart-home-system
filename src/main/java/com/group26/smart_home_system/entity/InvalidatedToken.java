@@ -1,12 +1,8 @@
 package com.group26.smart_home_system.entity;
 
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import java.time.LocalDateTime;
+import java.time.Instant;
+import lombok.*;
 
 @Entity
 @Table(name = "invalidated_token")
@@ -17,7 +13,7 @@ import java.time.LocalDateTime;
 public class InvalidatedToken {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @EqualsAndHashCode.Include
   private Long id;
 
@@ -25,6 +21,6 @@ public class InvalidatedToken {
   private String jti;
 
   @Column(name = "expired_at", nullable = false)
-  private LocalDateTime expiredAt;
+  private Instant expiredAt;
 
 }

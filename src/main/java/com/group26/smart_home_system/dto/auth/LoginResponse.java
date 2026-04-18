@@ -1,8 +1,7 @@
 package com.group26.smart_home_system.dto.auth;
 
+import java.time.Instant;
 import lombok.*;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -13,7 +12,7 @@ import java.time.LocalDateTime;
 public class LoginResponse {
 
   private String token;
-  private LocalDateTime expiresAt;
+  private Instant expiresAt;
   private UserResponse user;
 
 }

@@ -1,8 +1,8 @@
 package com.group26.smart_home_system.dto.auth;
 
+import com.group26.smart_home_system.enums.Role;
+import java.time.Instant;
 import lombok.*;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -17,7 +17,7 @@ public class UserResponse {
   private String firstName;
   private String email;
   private String phoneNumber;
-  private String role;
-  private LocalDateTime createdAt;
+  private Role role;
+  private Instant createdAt;
 
 }
