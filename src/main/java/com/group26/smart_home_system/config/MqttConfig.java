@@ -1,4 +1,4 @@
-package com.group26.smart_home_system.mqtt.config;
+package com.group26.smart_home_system.config;
 
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -11,6 +11,7 @@ public class MqttConfig {
 
   @Value("${mqtt.broker}")
   private String brokerUrl;
+
   @Value("${mqtt.client}")
   private String clientId;
 
