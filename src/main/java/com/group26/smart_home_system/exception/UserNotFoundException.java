@@ -1,7 +1,14 @@
 package com.group26.smart_home_system.exception;
 
-public class UserNotFoundException extends RuntimeException {
+import java.io.Serial;
+
+public class UserNotFoundException extends Exception {
+
+  @Serial
+  private static final long serialVersionUID = 1L;
+
   public UserNotFoundException(String message) {
     super(message);
   }
+
 }
