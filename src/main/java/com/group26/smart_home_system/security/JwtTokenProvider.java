@@ -26,9 +26,9 @@ public class JwtTokenProvider {
 
   public String generateToken(Long userId, String role) {
     try {
-      JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
+      JWSHeader jwsHeader = new JWSHeader(JWSAlgorithm.HS512);
 
-      JWTClaimsSet claims = new JWTClaimsSet.Builder()
+      JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
           .subject(userId.toString())
           .claim("scope", role)
           .issuer(issuer)
@@ -37,7 +37,7 @@ public class JwtTokenProvider {
           .jwtID(generateJti())
           .build();
 
-      JWSObject jwsObject = new JWSObject(header, new Payload(claims.toJSONObject()));
+      JWSObject jwsObject = new JWSObject(jwsHeader, new Payload(claimsSet.toJSONObject()));
       jwsObject.sign(new MACSigner(secret.getBytes()));
 
       return jwsObject.serialize();
@@ -61,8 +61,8 @@ public class JwtTokenProvider {
 
   public Date extractExpiration(String token) {
     try {
-      SignedJWT jwt = SignedJWT.parse(token);
-      return jwt.getJWTClaimsSet().getExpirationTime();
+      SignedJWT signedJWT = SignedJWT.parse(token);
+      return signedJWT.getJWTClaimsSet().getExpirationTime();
     } catch (Exception exception) {
       throw new RuntimeException(exception);
     }

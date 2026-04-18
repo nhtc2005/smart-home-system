@@ -1,11 +1,17 @@
 package com.group26.smart_home_system.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletResponse;
+import java.time.Instant;
+import java.util.Map;
+import javax.crypto.spec.SecretKeySpec;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
@@ -17,15 +23,13 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
-import javax.crypto.spec.SecretKeySpec;
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
 
   private final String[] PUBLIC_ENDPOINTS = {"/swagger-ui/**", "/v3/api-docs/**",
-      "/swagger-ui.html", "/auth/register", "/auth/login"};
+      "/swagger-ui.html", "/auth/register", "/auth/login", "/ws/**", "/api/ws/**"};
 
   @Value("${jwt.secret}")
   private String secretKey;
@@ -73,7 +77,9 @@ public class SecurityConfig {
       HttpSecurity httpSecurity,
       JwtDecoder jwtDecoder,
       CustomAuthenticationEntryPoint customAuthenticationEntryPoint) throws Exception {
-    httpSecurity.csrf(csrf -> csrf.disable())
+    httpSecurity.csrf(AbstractHttpConfigurer::disable)
+        .cors(cors -> {
+        })
         .authorizeHttpRequests(request -> request
             .requestMatchers(PUBLIC_ENDPOINTS)
             .permitAll()
@@ -86,6 +92,22 @@ public class SecurityConfig {
                 .jwtAuthenticationConverter(jwtAuthenticationConverter())
             )
             .authenticationEntryPoint(customAuthenticationEntryPoint)
+        )
+        .exceptionHandling(exception -> exception
+            .authenticationEntryPoint(customAuthenticationEntryPoint)
+            .accessDeniedHandler((request, response, ex) -> {
+              response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+              response.setContentType("application/json");
+
+              Map<String, Object> body = Map.of(
+                  "message", ex.getMessage(),
+                  "error", "403 FORBIDDEN",
+                  "status", 403,
+                  "timestamp", Instant.now()
+              );
+
+              response.getWriter().write(new ObjectMapper().writeValueAsString(body));
+            })
         );
 
     return httpSecurity.build();
