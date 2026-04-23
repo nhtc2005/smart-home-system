@@ -1,0 +1,36 @@
+# BUILD OUTPUT
+target/
+build/
+*.jar
+*.war
+*.ear
+
+# LOGS
+logs/
+*.log
+
+# ENV & SECRETS
+.env
+.env.*
+*.env
+
+# GIT
+.git
+.gitignore
+
+# IDE / EDITOR
+.vscode/
+.idea/
+*.iml
+
+# OS FILES
+.DS_Store
+Thumbs.db
+
+# DOCKER FILES
+docker-compose.yml
+docker-compose.*.yml
+
+# TEST / DOCS
+src/test/
+*.md

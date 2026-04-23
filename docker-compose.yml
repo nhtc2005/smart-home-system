@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:18
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+
+  initdb:
+    image: flyway/flyway
+    command: >
+      -url=jdbc:postgresql://db:5432/${DB_NAME}
+      -user=${DB_USERNAME}
+      -password=${DB_PASSWORD}
+      migrate
+    volumes:
+      - ./src/main/resources/db/migration:/flyway/sql
+    depends_on:
+      - db
+
+  app:
+    image: nhtc2005/smart-home-system:latest
+    container_name: smart-home-system
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
