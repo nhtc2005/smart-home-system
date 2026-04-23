@@ -1,11 +1,37 @@
 server:
-  port: 8000
+  port: ${SERVER_PORT:8080}
   servlet:
     context-path: /api
 
 spring:
   application:
     name: smart-home-system
+
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+
+jwt:
+  secret: ${JWT_SECRET}
+  expiration: ${JWT_EXPIRATION:3600000}
+  issuer: group26.com
+
+logging:
+  file:
+    path: ${LOG_PATH:logs}
+    name: ${LOG_FILE:smart-home-system.log}
+
+  logback:
+    rollingpolicy:
+      file-name-pattern: ${LOG_PATH:logs}/smart-home-system-%d{yyyy-MM-dd}.%i.log.gz
+      max-file-size: 10MB
+      max-history: 7
+      total-size-cap: 1GB
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
 
   datasource:
     url: ${DB_URL}
@@ -14,35 +40,53 @@ spring:
     driver-class-name: org.postgresql.Driver
 
   jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
       hibernate:
-        ddl-auto: validate
-      show-sql: false
-      properties:
-        hibernate:
-          format_sql: false
-
-jwt:
-  secret: ${JWT_SECRET}
-  expiration: 3600000
-  issuer: group26.com
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: false
 
 mqtt:
   broker: ${MQTT_BROKER_URL}
-  client: spring-backend-client
+  client: ${MQTT_CLIENT_ID:spring-backend-client-prod}
   username: ${MQTT_USERNAME}
   key: ${MQTT_KEY}
-  topics: ${mqtt.username}/feeds/+
+  topics: ${MQTT_TOPICS}
 
 logging:
   level:
-    root: WARN
+    root: ${LOG_LEVEL:WARN}
 
-  file:
-    path: logs
-    name: smart-home-system.log
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
 
-  logback:
-    rollingpolicy:
-      file-name-pattern: logs/smart-home-system-%d{yyyy-MM-dd}.%i.log.gz
-      max-file-size: 1MB
-      max-history: 7
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/smart-home-system}
+    username: ${DB_USERNAME:test}
+    password: ${DB_PASSWORD:123456}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+mqtt:
+  broker: ${MQTT_BROKER_URL:tcp://io.adafruit.com:1883}
+  client: ${MQTT_CLIENT_ID:spring-backend-client-dev}
+  username: ${MQTT_USERNAME:your_username_here}
+  key: ${MQTT_KEY:your_mqtt_key_here}
+  topics: ${MQTT_TOPICS:${MQTT_USERNAME}/feeds/+}
+
+logging:
+  level:
+    root: ${LOG_LEVEL:DEBUG}
