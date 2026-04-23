@@ -49,7 +49,7 @@ public class DynamicScheduleServiceImpl implements DynamicScheduleService {
 
     ScheduledFuture<?> scheduledFuture = taskScheduler.schedule(
         task,
-        new CronTrigger(schedule.getCronExpression(), TimeZone.getTimeZone("Asia/Ho_Chi_Minh")));
+        new CronTrigger(schedule.getCronExpression()));
 
     scheduledTasks.put(schedule.getId(), scheduledFuture);
 
