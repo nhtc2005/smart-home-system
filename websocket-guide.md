@@ -1,6 +1,6 @@
 # WebSocket Guide - Smart Home System
 
-## 1. Overview
+## Overview
 
 This project uses **Spring WebSocket (STOMP)** combined with **JWT authentication** 
 to provide real-time updates for IoT devices in the Smart Home System.
@@ -13,7 +13,7 @@ It supports:
 
 ---
 
-## 2. WebSocket Connection Endpoint
+## WebSocket Connection Endpoint
 
 ### URL
 
@@ -29,7 +29,7 @@ ws://localhost:8080/ws?token=eyJhbGciOiJIUzI1NiJ9...
 
 ---
 
-## 3. Authentication Flow (JWT Handshake)
+## Authentication Flow (JWT Handshake)
 
 Before establishing WebSocket connection:
 
@@ -51,7 +51,7 @@ Before establishing WebSocket connection:
 
 ---
 
-## 4. WebSocket Topics
+## WebSocket Topics
 
 Each user receives messages on:
 
@@ -67,7 +67,7 @@ Each user receives messages on:
 
 ---
 
-## 5. Message Structure
+## Message Structure
 
 All messages follow this structure:
 
@@ -81,7 +81,7 @@ All messages follow this structure:
 
 ---
 
-## 6. Event types
+## Event types
 
 ### SENSOR_DATA
 
