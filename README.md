@@ -108,7 +108,6 @@ automation rules, and communication between hardware devices and frontend applic
     │       ├── application-prod.yml
     │       ├── application.yml.example
     │       ├── messages.properties
-    │       │
     │       └── db
     │           └── migration
     │               └── V1__smart_home_system.sql
