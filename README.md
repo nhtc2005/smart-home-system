@@ -1,10 +1,17 @@
 # Smart Home System
 
+![Spring Boot](https://img.shields.io/badge/SpringBoot-4.0.5-green)
+![Docker](https://img.shields.io/badge/Docker-enabled-blue)
+![Adafruit IO](https://img.shields.io/badge/Adafruit_IO-MQTT-orange)
+![MQTT](https://img.shields.io/badge/MQTT-Protocol-lightgrey)
+![WebSocket](https://img.shields.io/badge/WebSocket-STOMP-yellow)
+
 ## Overview
 
 Smart Home System is an IoT-based backend project designed to manage and control 
 smart home devices efficiently. This project focuses on backend logic, device 
-communication, automation processing, and data management for IoT-based home automation.
+communication, automation processing, and data management for IoT-based home 
+automation systems.
 
 This project provides the server-side foundation for controlling devices such as 
 lights, fans, and sensors. It handles authentication, device status management, 
@@ -29,7 +36,9 @@ automation rules, and communication between hardware devices and frontend applic
 ### Backend
 
 - Java / Spring Boot
-- JWT Authentication
+- Spring Security + JWT Authentication
+- Spring Data JPA
+- Hibernate
 - RESTful API
 - PostgreSQL
 - Spring WebSocket (STOMP) for real-time communication
@@ -44,6 +53,10 @@ automation rules, and communication between hardware devices and frontend applic
 - Light Sensor
 - Relay Modules
 - Smart Device Control (lights, fan)
+
+### DevOps
+
+- Docker & Docker Compose
 
 ---
 
@@ -141,7 +154,7 @@ git clone https://github.com/nhtc2005/smart-home-system.git
 
 Create a `.env` file in the root directory:
 
-```text
+```env
 # SERVER
 SERVER_PORT=8080
 SPRING_PROFILES_ACTIVE=dev
@@ -185,17 +198,18 @@ This will automatically start:
 - Create the database on first startup
 - Start other dependent services
 
-> **Note:** On the first run, Docker will create the database volume and initialize the database automatically.
+> **Note:** On the first run, Docker will create the database volume and initialize 
+> the database automatically.
 
 3. **Access the application**
 
-Application:
+Application runs on:
 
 ```text
 http://localhost:8080
 ```
 
-Swagger UI:
+Swagger UI is available at:
 
 ```text
 http://localhost:8080/api/swagger-ui/index.html
@@ -225,19 +239,20 @@ cp src/main/resources/application.yml.example src/main/resources/application.yml
 
 4. **Access the application**
 
-Application:
+Application runs on:
 
 ```text
 http://localhost:8080
 ```
 
-Swagger UI:
+Swagger UI is available at:
 
 ```text
 http://localhost:8080/api/swagger-ui/index.html
 ```
 
-> **Note:** When running without Docker, you need to manually create the database before starting the application.
+> **Note:** When running without Docker, you need to manually create the database 
+> before starting the application.
 
 ---
 
@@ -262,3 +277,23 @@ Devices → MQTT → Adafruit IO → Spring Boot Backend → PostgreSQL
                                        ↓  
                                Frontend Dashboard
 ```
+
+---
+
+## License
+
+This project is for educational and demonstration purposes.
+
+---
+
+## Acknowledgements
+
+- Spring Boot community
+- Eclipse Paho MQTT client
+- Adafruit IO IoT platform
+- PostgreSQL community
+- Docker for containerization
+- Open-source IoT community
+
+Special thanks to all contributors and open-source libraries that made this project 
+possible.
