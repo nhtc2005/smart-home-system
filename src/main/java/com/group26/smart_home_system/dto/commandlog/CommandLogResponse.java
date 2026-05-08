@@ -19,5 +19,4 @@ public class CommandLogResponse {
   private String command;
   private CommandStatus status;
   private Instant timestamp;
-
 }

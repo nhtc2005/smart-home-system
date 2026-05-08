@@ -26,11 +26,9 @@ public class SensorHandler implements MessageHandler {
     try {
       Double value = Double.parseDouble(payload);
 
-      SensorDataEvent event = new SensorDataEvent(
-          parsedFeed.getDeviceId(),
-          parsedFeed.getIndex(),
-          value,
-          Instant.now());
+      SensorDataEvent event =
+          new SensorDataEvent(
+              parsedFeed.getDeviceId(), parsedFeed.getIndex(), value, Instant.now());
 
       applicationEventPublisher.publishEvent(event);
 
@@ -40,5 +38,4 @@ public class SensorHandler implements MessageHandler {
       log.error("Failed to handle sensor message: payload={}", payload, exception);
     }
   }
-
 }

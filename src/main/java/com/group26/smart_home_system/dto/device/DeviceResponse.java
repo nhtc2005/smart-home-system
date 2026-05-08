@@ -16,5 +16,4 @@ public class DeviceResponse {
   private String name;
   private Instant createdAt;
   private Instant lastSeen;
-
 }

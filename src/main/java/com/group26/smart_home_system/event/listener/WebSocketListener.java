@@ -36,7 +36,8 @@ public class WebSocketListener {
     Sensor sensor = sensorRepository.findById(sensorDataEvent.getSensorId()).orElse(null);
 
     if (device == null || sensor == null || device.getUser() == null) {
-      log.warn("Skip WebSocket sensor event: deviceId={}, sensorId={}",
+      log.warn(
+          "Skip WebSocket sensor event: deviceId={}, sensorId={}",
           sensorDataEvent.getDeviceId(),
           sensorDataEvent.getSensorId());
       return;
@@ -70,10 +71,12 @@ public class WebSocketListener {
   @EventListener
   public void handle(ActuatorStateEvent actuatorStateEvent) {
     Device device = deviceRepository.findById(actuatorStateEvent.getDeviceId()).orElse(null);
-    Actuator actuator = actuatorRepository.findById(actuatorStateEvent.getActuatorId()).orElse(null);
+    Actuator actuator =
+        actuatorRepository.findById(actuatorStateEvent.getActuatorId()).orElse(null);
 
     if (device == null || actuator == null || device.getUser() == null) {
-      log.warn("Skip WebSocket actuator event: deviceId={}, actuatorId={}",
+      log.warn(
+          "Skip WebSocket actuator event: deviceId={}, actuatorId={}",
           actuatorStateEvent.getDeviceId(),
           actuatorStateEvent.getActuatorId());
       return;
@@ -97,5 +100,4 @@ public class WebSocketListener {
 
     log.debug("Push actuator state to userId={}", device.getUser().getId());
   }
-
 }

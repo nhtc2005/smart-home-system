@@ -8,12 +8,7 @@ import org.springframework.stereotype.Component;
 public class CurrentUser {
 
   public Long getUserId() {
-    Jwt jwt = (Jwt) SecurityContextHolder
-        .getContext()
-        .getAuthentication()
-        .getPrincipal();
-
+    Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     return Long.parseLong(jwt.getSubject());
   }
-
 }

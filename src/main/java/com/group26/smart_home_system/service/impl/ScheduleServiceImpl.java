@@ -39,14 +39,16 @@ public class ScheduleServiceImpl implements ScheduleService {
       throws ActuatorNotFoundException {
     Schedule schedule = scheduleMapper.toEntity(createScheduleRequest);
 
-    String cron = CronUtils.buildCron(
-        createScheduleRequest.getTime(),
-        createScheduleRequest.getDays(),
-        createScheduleRequest.getMode()
-    );
+    String cron =
+        CronUtils.buildCron(
+            createScheduleRequest.getTime(),
+            createScheduleRequest.getDays(),
+            createScheduleRequest.getMode());
 
-    Actuator actuator = actuatorRepository.findById(createScheduleRequest.getActuatorId())
-        .orElseThrow(() -> new ActuatorNotFoundException(actuatorNotFound));
+    Actuator actuator =
+        actuatorRepository
+            .findById(createScheduleRequest.getActuatorId())
+            .orElseThrow(() -> new ActuatorNotFoundException(actuatorNotFound));
 
     schedule.setCronExpression(cron);
     schedule.setActuator(actuator);
@@ -62,17 +64,20 @@ public class ScheduleServiceImpl implements ScheduleService {
   @Override
   public List<ScheduleResponse> getScheduleByActuatorId(Long actuatorId)
       throws ActuatorNotFoundException {
-    Actuator actuator = actuatorRepository.findById(actuatorId)
-        .orElseThrow(() -> new ActuatorNotFoundException(actuatorNotFound));
+    Actuator actuator =
+        actuatorRepository
+            .findById(actuatorId)
+            .orElseThrow(() -> new ActuatorNotFoundException(actuatorNotFound));
     return scheduleMapper.toResponseList(scheduleRepository.findByActuatorId(actuator.getId()));
   }
 
   @Override
   @Transactional
   public void deleteSchedule(Long scheduleId) throws ScheduleNotFoundException {
-    Schedule schedule = scheduleRepository.findById(scheduleId)
-        .orElseThrow(() -> new ScheduleNotFoundException(scheduleNotFound));
+    Schedule schedule =
+        scheduleRepository
+            .findById(scheduleId)
+            .orElseThrow(() -> new ScheduleNotFoundException(scheduleNotFound));
     scheduleRepository.delete(schedule);
   }
-
 }

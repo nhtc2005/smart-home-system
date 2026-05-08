@@ -15,5 +15,4 @@ public interface SensorDataRepository extends JpaRepository<SensorData, Long> {
   List<SensorData> findBySensorIdAndTimestampBetween(Long sensorId, Instant from, Instant to);
 
   Page<SensorData> findBySensorId(Long sensorId, Pageable pageable);
-
 }

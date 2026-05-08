@@ -17,5 +17,4 @@ public class SensorDataPayload {
   private SensorType sensorType;
   private Double value;
   private String unit;
-
 }

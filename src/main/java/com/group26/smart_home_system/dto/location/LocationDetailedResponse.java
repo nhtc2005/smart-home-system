@@ -18,5 +18,4 @@ public class LocationDetailedResponse {
   private String name;
   private Instant createdAt;
   private List<DeviceResponse> devices;
-
 }

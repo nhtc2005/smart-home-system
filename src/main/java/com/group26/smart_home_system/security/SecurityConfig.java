@@ -139,11 +139,11 @@ public class SecurityConfig {
     corsConfiguration.setAllowedHeaders(List.of("*"));
     corsConfiguration.setAllowCredentials(true);
 
-    UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
+    UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource =
+        new UrlBasedCorsConfigurationSource();
 
     urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
 
     return urlBasedCorsConfigurationSource;
   }
-
 }

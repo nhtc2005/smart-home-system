@@ -12,8 +12,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @RequiredArgsConstructor
 public class SmartHomeSystemApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(SmartHomeSystemApplication.class, args);
-	}
-
+  public static void main(String[] args) {
+    SpringApplication.run(SmartHomeSystemApplication.class, args);
+  }
 }

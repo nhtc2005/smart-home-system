@@ -18,5 +18,4 @@ public class SensorListener {
   public void handle(SensorDataEvent sensorDataEvent) {
     sensorDataService.save(sensorDataEvent);
   }
-
 }

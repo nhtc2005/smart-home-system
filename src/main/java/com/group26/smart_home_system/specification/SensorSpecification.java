@@ -8,20 +8,18 @@ public class SensorSpecification {
 
   public static Specification<Sensor> hasUser(Long userId) {
     return (root, query, cb) ->
-        userId == null ? cb.conjunction()
+        userId == null
+            ? cb.conjunction()
             : cb.equal(root.get("device").get("location").get("user").get("id"), userId);
   }
 
   public static Specification<Sensor> hasDevice(Long deviceId) {
     return (root, query, cb) ->
-        deviceId == null ? cb.conjunction()
-            : cb.equal(root.get("device").get("id"), deviceId);
+        deviceId == null ? cb.conjunction() : cb.equal(root.get("device").get("id"), deviceId);
   }
 
   public static Specification<Sensor> hasType(SensorType type) {
-    return (root, query, cb) ->
-        type == null ? cb.conjunction()
-            : cb.equal(root.get("type"), type);
+    return (root, query, cb) -> type == null ? cb.conjunction() : cb.equal(root.get("type"), type);
   }
 
   public static Specification<Sensor> searchByKeyword(String keyword) {
@@ -34,9 +32,7 @@ public class SensorSpecification {
 
       return cb.or(
           cb.like(cb.lower(root.get("name")), like),
-          cb.like(cb.lower(root.get("mqttTopic")), like)
-      );
+          cb.like(cb.lower(root.get("mqttTopic")), like));
     };
   }
-
 }

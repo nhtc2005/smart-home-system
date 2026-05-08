@@ -76,5 +76,4 @@ public class JwtHandshakeInterceptor implements HandshakeInterceptor {
       log.error("WebSocket handshake error", exception);
     }
   }
-
 }

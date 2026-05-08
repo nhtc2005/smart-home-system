@@ -50,5 +50,4 @@ public class MqttPublisher {
     String feed = "device_" + parsedFeed.getDeviceId() + "_actuator_" + parsedFeed.getIndex();
     return username + "/feeds/" + feed;
   }
-
 }

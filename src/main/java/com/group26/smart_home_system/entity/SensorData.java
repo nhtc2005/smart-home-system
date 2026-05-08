@@ -25,5 +25,4 @@ public class SensorData {
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @JoinColumn(name = "sensor_id", nullable = false)
   private Sensor sensor;
-
 }

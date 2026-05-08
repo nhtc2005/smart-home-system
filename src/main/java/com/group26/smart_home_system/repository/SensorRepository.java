@@ -8,10 +8,11 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface SensorRepository extends JpaRepository<Sensor, Long>,
-    JpaSpecificationExecutor<Sensor> {
+public interface SensorRepository
+    extends JpaRepository<Sensor, Long>, JpaSpecificationExecutor<Sensor> {
 
-  @Query("""
+  @Query(
+      """
       SELECT s
       FROM Sensor s
       JOIN s.device d
@@ -21,7 +22,8 @@ public interface SensorRepository extends JpaRepository<Sensor, Long>,
       """)
   List<Sensor> findByUserId(@Param("userId") Long userId);
 
-  @Query("""
+  @Query(
+      """
       SELECT s
       FROM Sensor s
       JOIN s.device d
@@ -29,7 +31,6 @@ public interface SensorRepository extends JpaRepository<Sensor, Long>,
       WHERE s.id = :sensorId
       AND l.user.id = :userId
       """)
-  Optional<Sensor> findByIdAndUserId(@Param("sensorId") Long sensorId,
-      @Param("userId") Long userId);
-
+  Optional<Sensor> findByIdAndUserId(
+      @Param("sensorId") Long sensorId, @Param("userId") Long userId);
 }

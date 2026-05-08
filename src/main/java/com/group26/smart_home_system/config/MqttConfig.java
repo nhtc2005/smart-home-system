@@ -19,5 +19,4 @@ public class MqttConfig {
   public MqttClient mqttClient() throws MqttException {
     return new MqttClient(brokerUrl, clientId);
   }
-
 }

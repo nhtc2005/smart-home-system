@@ -14,12 +14,16 @@ import com.group26.smart_home_system.service.ActuatorService;
 import com.group26.smart_home_system.service.CommandLogService;
 import com.group26.smart_home_system.service.ScheduleService;
 import java.util.List;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/actuators")
 @RequiredArgsConstructor
+@Validated
 public class ActuatorController {
 
   private final ActuatorService actuatorService;
@@ -41,7 +46,7 @@ public class ActuatorController {
   @PreAuthorize("hasAnyRole('USER')")
   @PostMapping
   public ResponseEntity<ActuatorResponse> createActuator(
-      @RequestBody CreateActuatorRequest createActuatorRequest)
+      @Valid @RequestBody CreateActuatorRequest createActuatorRequest)
       throws DeviceNotFoundException {
     ActuatorResponse actuatorResponse = actuatorService.createActuator(createActuatorRequest);
     return ResponseEntity.status(HttpStatus.CREATED).body(actuatorResponse);
@@ -56,7 +61,7 @@ public class ActuatorController {
   @PreAuthorize("hasAnyRole('USER')")
   @GetMapping("/{actuatorId}")
   public ResponseEntity<ActuatorResponse> getActuatorById(
-      @PathVariable("actuatorId") Long actuatorId)
+      @PathVariable("actuatorId") @Positive(message = "{actuator.id.invalid}") Long actuatorId)
       throws ActuatorNotFoundException {
     return ResponseEntity.ok(actuatorService.getActuatorById(actuatorId));
   }
@@ -64,48 +69,49 @@ public class ActuatorController {
   @PreAuthorize("hasAnyRole('USER')")
   @GetMapping
   public ResponseEntity<Page<ActuatorResponse>> searchActuators(
-      ActuatorFilterRequest actuatorFilterRequest,
-      Pageable pageable) {
-    Page<ActuatorResponse> actuatorResponsePage = actuatorService.searchActuators(
-        actuatorFilterRequest, pageable);
+      @Valid ActuatorFilterRequest actuatorFilterRequest, Pageable pageable) {
+    Page<ActuatorResponse> actuatorResponsePage =
+        actuatorService.searchActuators(actuatorFilterRequest, pageable);
     return ResponseEntity.ok(actuatorResponsePage);
   }
 
   @PreAuthorize("hasAnyRole('USER')")
   @PutMapping("/{actuatorId}")
   public ResponseEntity<ActuatorResponse> updateActuator(
-      @PathVariable("actuatorId") Long actuatorId,
-      @RequestBody UpdateActuatorRequest updateActuatorRequest)
+      @PathVariable("actuatorId") @Positive(message = "{actuator.id.invalid}") Long actuatorId,
+      @Valid @RequestBody UpdateActuatorRequest updateActuatorRequest)
       throws ActuatorNotFoundException, DeviceNotFoundException {
-    ActuatorResponse actuatorResponse = actuatorService.updateActuator(actuatorId,
-        updateActuatorRequest);
+    ActuatorResponse actuatorResponse =
+        actuatorService.updateActuator(actuatorId, updateActuatorRequest);
     return ResponseEntity.ok(actuatorResponse);
   }
 
   @PreAuthorize("hasAnyRole('USER')")
   @PutMapping("/{actuatorId}/state")
   public ResponseEntity<ActuatorResponse> updateActuatorState(
-      @PathVariable("actuatorId") Long actuatorId,
-      @RequestBody SetActuatorStateRequest setActuatorStateRequest)
+      @PathVariable("actuatorId") @Positive(message = "{actuator.id.invalid}") Long actuatorId,
+      @Valid @RequestBody SetActuatorStateRequest setActuatorStateRequest)
       throws ActuatorNotFoundException {
-    ActuatorResponse actuatorResponse = actuatorService.setActuatorState(actuatorId,
-        setActuatorStateRequest);
+    ActuatorResponse actuatorResponse =
+        actuatorService.setActuatorState(actuatorId, setActuatorStateRequest);
     return ResponseEntity.ok(actuatorResponse);
   }
 
   @PreAuthorize("hasAnyRole('USER')")
   @PutMapping("/{actuatorId}/mode")
   public ResponseEntity<ActuatorResponse> updateActuatorMode(
-      @PathVariable("actuatorId") Long actuatorId,
-      @RequestBody SetActuatorModeRequest setActuatorModeRequest) throws ActuatorNotFoundException {
-    ActuatorResponse actuatorResponse = actuatorService.setActuatorMode(actuatorId,
-        setActuatorModeRequest);
+      @PathVariable("actuatorId") @Positive(message = "{actuator.id.invalid}") Long actuatorId,
+      @Valid @RequestBody SetActuatorModeRequest setActuatorModeRequest)
+      throws ActuatorNotFoundException {
+    ActuatorResponse actuatorResponse =
+        actuatorService.setActuatorMode(actuatorId, setActuatorModeRequest);
     return ResponseEntity.ok(actuatorResponse);
   }
 
   @PreAuthorize("hasAnyRole('USER')")
   @DeleteMapping("/{actuatorId}")
-  public ResponseEntity<?> deleteActuator(@PathVariable("actuatorId") Long actuatorId)
+  public ResponseEntity<?> deleteActuator(
+      @PathVariable("actuatorId") @Positive(message = "{actuator.id.invalid}") Long actuatorId)
       throws ActuatorNotFoundException {
     actuatorService.deleteActuator(actuatorId);
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -114,15 +120,15 @@ public class ActuatorController {
   @PreAuthorize("hasAnyRole('USER')")
   @GetMapping("/{actuatorId}/command-logs")
   public ResponseEntity<List<CommandLogResponse>> getActuatorCommandLogs(
-      @PathVariable("actuatorId") Long actuatorId) {
+      @PathVariable("actuatorId") @Positive(message = "{actuator.id.invalid}") Long actuatorId) {
     return ResponseEntity.ok(commandLogService.getCommandLogsByActuatorId(actuatorId));
   }
 
   @PreAuthorize("hasAnyRole('USER')")
   @GetMapping("/{actuatorId}/schedules")
   public ResponseEntity<List<ScheduleResponse>> getActuatorSchedules(
-      @PathVariable("actuatorId") Long actuatorId) throws ActuatorNotFoundException {
+      @PathVariable("actuatorId") @Positive(message = "{actuator.id.invalid}") Long actuatorId)
+      throws ActuatorNotFoundException {
     return ResponseEntity.ok(scheduleService.getScheduleByActuatorId(actuatorId));
   }
-
 }

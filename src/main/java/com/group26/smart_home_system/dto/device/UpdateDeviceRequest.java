@@ -1,5 +1,6 @@
 package com.group26.smart_home_system.dto.device;
 
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 @Getter
@@ -9,7 +10,10 @@ import lombok.*;
 @AllArgsConstructor
 public class UpdateDeviceRequest {
 
-  private String name;
+  @Positive(message = "{device.location-id.invalid}")
   private Long locationId;
 
+  @NotBlank(message = "{device.name.required}")
+  @Size(min = 2, max = 100, message = "{device.name.size}")
+  private String name;
 }

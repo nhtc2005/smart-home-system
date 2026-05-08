@@ -38,5 +38,4 @@ public class CommandLog {
   @ManyToOne
   @JoinColumn(name = "actuator_id", nullable = false)
   private Actuator actuator;
-
 }

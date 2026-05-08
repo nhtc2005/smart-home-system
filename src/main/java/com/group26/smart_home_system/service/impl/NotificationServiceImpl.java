@@ -24,17 +24,21 @@ public class NotificationServiceImpl implements NotificationService {
 
   @Override
   public void save(ActuatorStateEvent actuatorStateEvent) {
-    Actuator actuator = actuatorRepository
-        .findByIdWithDeviceAndUser(actuatorStateEvent.getActuatorId())
-        .orElse(null);
+    Actuator actuator =
+        actuatorRepository
+            .findByIdWithDeviceAndUser(actuatorStateEvent.getActuatorId())
+            .orElse(null);
 
     if (actuator == null) {
       return;
     }
 
     Notification notification = new Notification();
-    notification.setMessage("Actuator " + actuatorStateEvent.getActuatorId() + " "
-        + actuatorStateEvent.getActuatorState().name());
+    notification.setMessage(
+        "Actuator "
+            + actuatorStateEvent.getActuatorId()
+            + " "
+            + actuatorStateEvent.getActuatorState().name());
     notification.setDevice(actuator.getDevice());
     notification.setUser(actuator.getDevice().getUser());
     notificationRepository.save(notification);
@@ -45,5 +49,4 @@ public class NotificationServiceImpl implements NotificationService {
     return notificationMapper.toResponseList(
         notificationRepository.findByUserId(currentUser.getUserId()));
   }
-
 }

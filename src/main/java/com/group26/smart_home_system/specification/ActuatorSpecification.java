@@ -15,16 +15,11 @@ public class ActuatorSpecification {
 
   public static Specification<Actuator> hasDevice(Long deviceId) {
     return (root, query, cb) ->
-        deviceId == null
-            ? cb.conjunction()
-            : cb.equal(root.get("device").get("id"), deviceId);
+        deviceId == null ? cb.conjunction() : cb.equal(root.get("device").get("id"), deviceId);
   }
 
   public static Specification<Actuator> hasType(ActuatorType type) {
-    return (root, query, cb) ->
-        type == null
-            ? cb.conjunction()
-            : cb.equal(root.get("type"), type);
+    return (root, query, cb) -> type == null ? cb.conjunction() : cb.equal(root.get("type"), type);
   }
 
   public static Specification<Actuator> searchByKeyword(String keyword) {
@@ -39,9 +34,7 @@ public class ActuatorSpecification {
           cb.like(cb.lower(root.get("name")), likePattern),
           cb.like(cb.lower(root.get("type").as(String.class)), likePattern),
           cb.like(cb.lower(root.get("status").as(String.class)), likePattern),
-          cb.like(cb.lower(root.get("mode").as(String.class)), likePattern)
-      );
+          cb.like(cb.lower(root.get("mode").as(String.class)), likePattern));
     };
   }
-
 }

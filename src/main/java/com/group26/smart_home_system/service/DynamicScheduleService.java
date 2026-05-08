@@ -15,5 +15,4 @@ public interface DynamicScheduleService {
   void cancelByActuator(Long actuatorId);
 
   void rescheduleByActuator(Long actuatorId);
-
 }

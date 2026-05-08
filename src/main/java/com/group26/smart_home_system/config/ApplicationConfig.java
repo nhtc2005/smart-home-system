@@ -12,8 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class ApplicationConfig {
 
   @Bean
-  ApplicationRunner applicationRunner(UserRepository userRepository,
-      PasswordEncoder passwordEncoder) {
+  ApplicationRunner applicationRunner(
+      UserRepository userRepository, PasswordEncoder passwordEncoder) {
     return args -> {
       if (userRepository.findByEmail("admin@gmail.com").isEmpty()) {
         User user = new User();
@@ -26,5 +26,4 @@ public class ApplicationConfig {
       }
     };
   }
-
 }

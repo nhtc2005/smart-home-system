@@ -22,11 +22,8 @@ public class CronUtils {
       return String.format("0 %d %d * * *", minute, hour);
     }
 
-    String dayOfWeek = days.stream()
-        .map(String::valueOf)
-        .collect(Collectors.joining(","));
+    String dayOfWeek = days.stream().map(String::valueOf).collect(Collectors.joining(","));
 
     return String.format("0 %d %d ? * %s", minute, hour, dayOfWeek);
   }
-
 }

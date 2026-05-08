@@ -12,5 +12,4 @@ public interface CommandLogService {
   void save(CommandLog commandLog);
 
   List<CommandLogResponse> getCommandLogsByActuatorId(Long actuatorId);
-
 }

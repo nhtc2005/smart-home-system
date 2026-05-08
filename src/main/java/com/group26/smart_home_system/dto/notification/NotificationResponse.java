@@ -16,5 +16,4 @@ public class NotificationResponse {
   private Integer deviceId;
   private String message;
   private Instant timestamp;
-
 }

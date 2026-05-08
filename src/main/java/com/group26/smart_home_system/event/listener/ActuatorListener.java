@@ -28,15 +28,14 @@ public class ActuatorListener {
   @Async
   @EventListener
   public void handle(ActuatorMessageEvent actuatorMessageEvent) {
-    log.debug("Publishing actuator command: deviceId={}, actuatorId={}",
+    log.debug(
+        "Publishing actuator command: deviceId={}, actuatorId={}",
         actuatorMessageEvent.getDeviceId(),
         actuatorMessageEvent.getActuatorId());
 
-    ParsedFeed parsedFeed = new ParsedFeed(
-        actuatorMessageEvent.getDeviceId(),
-        "actuator",
-        actuatorMessageEvent.getActuatorId());
+    ParsedFeed parsedFeed =
+        new ParsedFeed(
+            actuatorMessageEvent.getDeviceId(), "actuator", actuatorMessageEvent.getActuatorId());
     mqttPublisher.publish(parsedFeed, actuatorMessageEvent.getMessage());
   }
-
 }

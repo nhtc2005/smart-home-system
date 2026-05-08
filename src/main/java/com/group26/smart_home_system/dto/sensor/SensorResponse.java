@@ -15,5 +15,4 @@ public class SensorResponse {
   private Long deviceId;
   private String name;
   private SensorType type;
-
 }

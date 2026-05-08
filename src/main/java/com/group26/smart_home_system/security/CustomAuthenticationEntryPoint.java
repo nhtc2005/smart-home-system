@@ -15,7 +15,8 @@ import org.springframework.stereotype.Component;
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
   @Override
-  public void commence(HttpServletRequest httpServletRequest,
+  public void commence(
+      HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse,
       AuthenticationException authenticationException)
       throws IOException {
@@ -32,15 +33,18 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
     httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
-    Map<String, Object> body = Map.of(
-        "message", message,
-        "error", "401 UNAUTHORIZED",
-        "status", 401,
-        "timestamp", Instant.now().toString()
-    );
+    Map<String, Object> body =
+        Map.of(
+            "message",
+            message,
+            "error",
+            "401 UNAUTHORIZED",
+            "status",
+            401,
+            "timestamp",
+            Instant.now().toString());
 
     httpServletResponse.setContentType("application/json");
     httpServletResponse.getWriter().write(new ObjectMapper().writeValueAsString(body));
   }
-
 }

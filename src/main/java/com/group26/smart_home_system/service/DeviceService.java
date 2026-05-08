@@ -27,5 +27,4 @@ public interface DeviceService {
       throws DeviceNotFoundException, LocationNotFoundException;
 
   void deleteDevice(Long deviceId) throws DeviceNotFoundException;
-
 }

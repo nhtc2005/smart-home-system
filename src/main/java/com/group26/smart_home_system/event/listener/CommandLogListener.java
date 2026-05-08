@@ -18,5 +18,4 @@ public class CommandLogListener {
   public void handle(ActuatorMessageEvent actuatorMessageEvent) {
     commandLogService.save(actuatorMessageEvent);
   }
-
 }

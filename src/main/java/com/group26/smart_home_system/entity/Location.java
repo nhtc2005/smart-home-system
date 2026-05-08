@@ -33,5 +33,4 @@ public class Location {
 
   @OneToMany(mappedBy = "location")
   private List<Device> devices = new ArrayList<>();
-
 }

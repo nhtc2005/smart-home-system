@@ -39,8 +39,10 @@ public class LocationServiceImpl implements LocationService {
   public LocationResponse createLocation(CreateLocationRequest createLocationRequest)
       throws UserNotFoundException {
     Location newLocation = locationMapper.toEntity(createLocationRequest);
-    User user = userRepository.findById(currentUser.getUserId())
-        .orElseThrow(() -> new UserNotFoundException(userNotFound));
+    User user =
+        userRepository
+            .findById(currentUser.getUserId())
+            .orElseThrow(() -> new UserNotFoundException(userNotFound));
     newLocation.setUser(user);
     locationRepository.save(newLocation);
     return locationMapper.toResponse(newLocation);
@@ -55,18 +57,22 @@ public class LocationServiceImpl implements LocationService {
   @Override
   public LocationDetailedResponse getLocationById(Long locationId)
       throws LocationNotFoundException {
-    Location location = locationRepository.findByIdAndUserId(locationId, currentUser.getUserId())
-        .orElseThrow(() -> new LocationNotFoundException(locationNotFound));
+    Location location =
+        locationRepository
+            .findByIdAndUserId(locationId, currentUser.getUserId())
+            .orElseThrow(() -> new LocationNotFoundException(locationNotFound));
     return locationMapper.toDetailedResponse(location);
   }
 
   @Override
   @Transactional
-  public LocationResponse updateLocation(Long locationId,
-      UpdateLocationRequest updateLocationRequest)
+  public LocationResponse updateLocation(
+      Long locationId, UpdateLocationRequest updateLocationRequest)
       throws LocationNotFoundException {
-    Location location = locationRepository.findByIdAndUserId(locationId, currentUser.getUserId())
-        .orElseThrow(() -> new LocationNotFoundException(locationNotFound));
+    Location location =
+        locationRepository
+            .findByIdAndUserId(locationId, currentUser.getUserId())
+            .orElseThrow(() -> new LocationNotFoundException(locationNotFound));
     location.setName(updateLocationRequest.getName());
     locationRepository.save(location);
     return locationMapper.toResponse(location);
@@ -75,9 +81,10 @@ public class LocationServiceImpl implements LocationService {
   @Override
   @Transactional
   public void deleteLocation(Long locationId) throws LocationNotFoundException {
-    Location location = locationRepository.findByIdAndUserId(locationId, currentUser.getUserId())
-        .orElseThrow(() -> new LocationNotFoundException(locationNotFound));
+    Location location =
+        locationRepository
+            .findByIdAndUserId(locationId, currentUser.getUserId())
+            .orElseThrow(() -> new LocationNotFoundException(locationNotFound));
     locationRepository.delete(location);
   }
-
 }

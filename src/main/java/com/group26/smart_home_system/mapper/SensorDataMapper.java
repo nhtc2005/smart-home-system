@@ -12,5 +12,4 @@ public interface SensorDataMapper {
   SensorDataResponse toResponse(SensorData sensorData);
 
   List<SensorDataResponse> toResponseList(List<SensorData> sensorDataList);
-
 }

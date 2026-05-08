@@ -17,5 +17,4 @@ public class ActuatorStatePayload {
   private String name;
   private ActuatorType actuatorType;
   private ActuatorState actuatorState;
-
 }

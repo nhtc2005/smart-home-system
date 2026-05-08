@@ -48,8 +48,10 @@ public class SensorServiceImpl implements SensorService {
   public SensorResponse createSensor(CreateSensorRequest createSensorRequest)
       throws DeviceNotFoundException {
     Sensor sensor = sensorMapper.toEntity(createSensorRequest);
-    Device device = deviceRepository.findById(createSensorRequest.getDeviceId())
-        .orElseThrow(() -> new DeviceNotFoundException(deviceNotFound));
+    Device device =
+        deviceRepository
+            .findById(createSensorRequest.getDeviceId())
+            .orElseThrow(() -> new DeviceNotFoundException(deviceNotFound));
     sensor.setDevice(device);
     sensorRepository.save(sensor);
     sensor.setMqttTopic("device-" + device.getId() + "-sensor-" + sensor.getId());
@@ -64,32 +66,37 @@ public class SensorServiceImpl implements SensorService {
 
   @Override
   public SensorResponse getSensorById(Long sensorId) throws SensorNotFoundException {
-    Sensor sensor = sensorRepository.findByIdAndUserId(sensorId, currentUser.getUserId())
-        .orElseThrow(() -> new SensorNotFoundException(sensorNotFound));
+    Sensor sensor =
+        sensorRepository
+            .findByIdAndUserId(sensorId, currentUser.getUserId())
+            .orElseThrow(() -> new SensorNotFoundException(sensorNotFound));
     return sensorMapper.toResponse(sensor);
   }
 
   @Override
-  public Page<SensorResponse> searchSensors(SensorFilterRequest sensorFilterRequest, Pageable pageable) {
-    Specification<Sensor> spec = Specification
-        .where(hasUser(currentUser.getUserId()))
-        .and(hasDevice(sensorFilterRequest.getDeviceId()))
-        .and(hasType(sensorFilterRequest.getType()))
-        .and(searchByKeyword(sensorFilterRequest.getKeyword()));
+  public Page<SensorResponse> searchSensors(
+      SensorFilterRequest sensorFilterRequest, Pageable pageable) {
+    Specification<Sensor> spec =
+        Specification.where(hasUser(currentUser.getUserId()))
+            .and(hasDevice(sensorFilterRequest.getDeviceId()))
+            .and(hasType(sensorFilterRequest.getType()))
+            .and(searchByKeyword(sensorFilterRequest.getKeyword()));
 
-    return sensorRepository.findAll(spec, pageable)
-        .map(sensorMapper::toResponse);
+    return sensorRepository.findAll(spec, pageable).map(sensorMapper::toResponse);
   }
 
   @Override
   @Transactional
   public SensorResponse updateSensor(Long sensorId, UpdateSensorRequest updateSensorRequest)
       throws SensorNotFoundException, DeviceNotFoundException {
-    Sensor sensor = sensorRepository.findByIdAndUserId(sensorId, currentUser.getUserId())
-        .orElseThrow(() -> new SensorNotFoundException(sensorNotFound));
-    Device device = deviceRepository.findByIdAndUserId(updateSensorRequest.getDeviceId(),
-            currentUser.getUserId())
-        .orElseThrow(() -> new DeviceNotFoundException(deviceNotFound));
+    Sensor sensor =
+        sensorRepository
+            .findByIdAndUserId(sensorId, currentUser.getUserId())
+            .orElseThrow(() -> new SensorNotFoundException(sensorNotFound));
+    Device device =
+        deviceRepository
+            .findByIdAndUserId(updateSensorRequest.getDeviceId(), currentUser.getUserId())
+            .orElseThrow(() -> new DeviceNotFoundException(deviceNotFound));
     sensor.setName(updateSensorRequest.getName());
     sensor.setDevice(device);
     return sensorMapper.toResponse(sensorRepository.save(sensor));
@@ -98,9 +105,10 @@ public class SensorServiceImpl implements SensorService {
   @Override
   @Transactional
   public void deleteSensor(Long sensorId) throws SensorNotFoundException {
-    Sensor sensor = sensorRepository.findByIdAndUserId(sensorId, currentUser.getUserId())
-        .orElseThrow(() -> new SensorNotFoundException(sensorNotFound));
+    Sensor sensor =
+        sensorRepository
+            .findByIdAndUserId(sensorId, currentUser.getUserId())
+            .orElseThrow(() -> new SensorNotFoundException(sensorNotFound));
     sensorRepository.delete(sensor);
   }
-
 }

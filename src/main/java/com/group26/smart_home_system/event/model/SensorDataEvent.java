@@ -15,5 +15,4 @@ public class SensorDataEvent {
   private Long sensorId;
   private Double value;
   private Instant timestamp;
-
 }

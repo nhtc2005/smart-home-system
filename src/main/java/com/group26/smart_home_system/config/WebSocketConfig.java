@@ -17,7 +17,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
   @Override
   public void registerStompEndpoints(StompEndpointRegistry stompEndpointRegistry) {
-    stompEndpointRegistry.addEndpoint("/ws")
+    stompEndpointRegistry
+        .addEndpoint("/ws")
         .setAllowedOriginPatterns("*")
         .addInterceptors(jwtHandshakeInterceptor)
         .withSockJS();
@@ -29,5 +30,4 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     messageBrokerRegistry.setApplicationDestinationPrefixes("/app");
     messageBrokerRegistry.setUserDestinationPrefix("/user");
   }
-
 }

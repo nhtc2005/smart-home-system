@@ -19,5 +19,4 @@ public class ActuatorResponse {
   private ActuatorType type;
   private ActuatorState state;
   private ActuatorMode mode;
-
 }

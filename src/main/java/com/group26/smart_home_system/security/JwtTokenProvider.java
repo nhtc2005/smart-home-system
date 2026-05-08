@@ -28,14 +28,15 @@ public class JwtTokenProvider {
     try {
       JWSHeader jwsHeader = new JWSHeader(JWSAlgorithm.HS512);
 
-      JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
-          .subject(userId.toString())
-          .claim("scope", role)
-          .issuer(issuer)
-          .issueTime(new Date())
-          .expirationTime(new Date(System.currentTimeMillis() + expiration))
-          .jwtID(generateJti())
-          .build();
+      JWTClaimsSet claimsSet =
+          new JWTClaimsSet.Builder()
+              .subject(userId.toString())
+              .claim("scope", role)
+              .issuer(issuer)
+              .issueTime(new Date())
+              .expirationTime(new Date(System.currentTimeMillis() + expiration))
+              .jwtID(generateJti())
+              .build();
 
       JWSObject jwsObject = new JWSObject(jwsHeader, new Payload(claimsSet.toJSONObject()));
       jwsObject.sign(new MACSigner(secret.getBytes()));
@@ -71,5 +72,4 @@ public class JwtTokenProvider {
   private String generateJti() {
     return java.util.UUID.randomUUID().toString();
   }
-
 }

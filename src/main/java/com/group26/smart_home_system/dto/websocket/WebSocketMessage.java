@@ -15,5 +15,4 @@ public class WebSocketMessage<T> {
   private WebSocketEventType type;
   private Instant timestamp;
   private T payload;
-
 }

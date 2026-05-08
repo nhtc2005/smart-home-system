@@ -13,5 +13,4 @@ public class RefreshTokenResponse {
 
   private String token;
   private Instant expiresAt;
-
 }

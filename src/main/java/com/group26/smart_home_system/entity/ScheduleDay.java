@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "schedule_days",
+@Table(
+    name = "schedule_days",
     uniqueConstraints = @UniqueConstraint(columnNames = {"schedule_id", "day_of_week"}))
 @Getter
 @Setter
@@ -23,5 +24,4 @@ public class ScheduleDay {
   @ManyToOne
   @JoinColumn(name = "schedule_id", nullable = false)
   private Schedule schedule;
-
 }

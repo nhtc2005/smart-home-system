@@ -53,10 +53,14 @@ public class DeviceServiceImpl implements DeviceService {
   @Transactional
   public DeviceResponse createDevice(CreateDeviceRequest createDeviceRequest)
       throws UserNotFoundException, LocationNotFoundException {
-    User user = userRepository.findById(currentUser.getUserId())
-        .orElseThrow(() -> new UserNotFoundException(userNotFound));
-    Location location = locationRepository.findById(createDeviceRequest.getLocationId())
-        .orElseThrow(() -> new LocationNotFoundException(locationNotFound));
+    User user =
+        userRepository
+            .findById(currentUser.getUserId())
+            .orElseThrow(() -> new UserNotFoundException(userNotFound));
+    Location location =
+        locationRepository
+            .findById(createDeviceRequest.getLocationId())
+            .orElseThrow(() -> new LocationNotFoundException(locationNotFound));
     Device newDevice = deviceMapper.toEntity(createDeviceRequest);
     newDevice.setUser(user);
     newDevice.setLocation(location);
@@ -72,31 +76,36 @@ public class DeviceServiceImpl implements DeviceService {
 
   @Override
   public DeviceDetailedResponse getDeviceById(Long deviceId) throws DeviceNotFoundException {
-    Device device = deviceRepository.findDetailedByIdAndUserId(deviceId, currentUser.getUserId())
-        .orElseThrow(() -> new DeviceNotFoundException(deviceNotFound));
+    Device device =
+        deviceRepository
+            .findDetailedByIdAndUserId(deviceId, currentUser.getUserId())
+            .orElseThrow(() -> new DeviceNotFoundException(deviceNotFound));
     return deviceMapper.toDetailedResponse(device);
   }
 
   @Override
-  public Page<DeviceResponse> searchDevices(DeviceFilterRequest deviceFilterRequest,
-      Pageable pageable) {
-    Specification<Device> spec = Specification
-        .where(hasUser(currentUser.getUserId()))
-        .and(hasLocation(deviceFilterRequest.getLocationId()))
-        .and(searchByKeyword(deviceFilterRequest.getKeyword()));
+  public Page<DeviceResponse> searchDevices(
+      DeviceFilterRequest deviceFilterRequest, Pageable pageable) {
+    Specification<Device> spec =
+        Specification.where(hasUser(currentUser.getUserId()))
+            .and(hasLocation(deviceFilterRequest.getLocationId()))
+            .and(searchByKeyword(deviceFilterRequest.getKeyword()));
 
-    return deviceRepository.findAll(spec, pageable)
-        .map(deviceMapper::toResponse);
+    return deviceRepository.findAll(spec, pageable).map(deviceMapper::toResponse);
   }
 
   @Override
   @Transactional
   public DeviceResponse updateDevice(Long deviceId, UpdateDeviceRequest updateDeviceRequest)
       throws DeviceNotFoundException, LocationNotFoundException {
-    Device device = deviceRepository.findByIdAndUserId(deviceId, currentUser.getUserId())
-        .orElseThrow(() -> new DeviceNotFoundException(deviceNotFound));
-    Location location = locationRepository.findById(updateDeviceRequest.getLocationId())
-        .orElseThrow(() -> new LocationNotFoundException(locationNotFound));
+    Device device =
+        deviceRepository
+            .findByIdAndUserId(deviceId, currentUser.getUserId())
+            .orElseThrow(() -> new DeviceNotFoundException(deviceNotFound));
+    Location location =
+        locationRepository
+            .findById(updateDeviceRequest.getLocationId())
+            .orElseThrow(() -> new LocationNotFoundException(locationNotFound));
     device.setName(updateDeviceRequest.getName());
     device.setLocation(location);
     return deviceMapper.toResponse(deviceRepository.save(device));
@@ -105,9 +114,10 @@ public class DeviceServiceImpl implements DeviceService {
   @Override
   @Transactional
   public void deleteDevice(Long deviceId) throws DeviceNotFoundException {
-    Device device = deviceRepository.findByIdAndUserId(deviceId, currentUser.getUserId())
-        .orElseThrow(() -> new DeviceNotFoundException(deviceNotFound));
+    Device device =
+        deviceRepository
+            .findByIdAndUserId(deviceId, currentUser.getUserId())
+            .orElseThrow(() -> new DeviceNotFoundException(deviceNotFound));
     deviceRepository.delete(device);
   }
-
 }

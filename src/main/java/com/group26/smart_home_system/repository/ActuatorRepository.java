@@ -8,10 +8,11 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface ActuatorRepository extends JpaRepository<Actuator, Long>,
-    JpaSpecificationExecutor<Actuator> {
+public interface ActuatorRepository
+    extends JpaRepository<Actuator, Long>, JpaSpecificationExecutor<Actuator> {
 
-  @Query("""
+  @Query(
+      """
       SELECT a
       FROM Actuator a
       JOIN a.device d
@@ -21,7 +22,8 @@ public interface ActuatorRepository extends JpaRepository<Actuator, Long>,
       """)
   List<Actuator> findByUserId(@Param("userId") Long userId);
 
-  @Query("""
+  @Query(
+      """
       SELECT a
       FROM Actuator a
       JOIN a.device d
@@ -30,16 +32,14 @@ public interface ActuatorRepository extends JpaRepository<Actuator, Long>,
       AND l.user.id = :userId
       """)
   Optional<Actuator> findByIdAndUserId(
-      @Param("actuatorId") Long actuatorId,
-      @Param("userId") Long userId
-  );
+      @Param("actuatorId") Long actuatorId, @Param("userId") Long userId);
 
-  @Query("""
+  @Query(
+      """
       SELECT a FROM Actuator a
       JOIN FETCH a.device d
       JOIN FETCH d.user
       WHERE a.id = :id
       """)
   Optional<Actuator> findByIdWithDeviceAndUser(@Param("id") Long actuatorId);
-
 }

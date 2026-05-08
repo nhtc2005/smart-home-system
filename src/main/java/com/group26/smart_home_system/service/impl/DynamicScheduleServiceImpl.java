@@ -39,17 +39,17 @@ public class DynamicScheduleServiceImpl implements DynamicScheduleService {
 
     cancel(schedule.getId());
 
-    Runnable task = () -> {
-      try {
-        executeSchedule(schedule.getId());
-      } catch (Exception exception) {
-        log.error("Error executing schedule {}", schedule.getId(), exception);
-      }
-    };
+    Runnable task =
+        () -> {
+          try {
+            executeSchedule(schedule.getId());
+          } catch (Exception exception) {
+            log.error("Error executing schedule {}", schedule.getId(), exception);
+          }
+        };
 
-    ScheduledFuture<?> scheduledFuture = taskScheduler.schedule(
-        task,
-        new CronTrigger(schedule.getCronExpression()));
+    ScheduledFuture<?> scheduledFuture =
+        taskScheduler.schedule(task, new CronTrigger(schedule.getCronExpression()));
 
     scheduledTasks.put(schedule.getId(), scheduledFuture);
 
@@ -57,14 +57,11 @@ public class DynamicScheduleServiceImpl implements DynamicScheduleService {
   }
 
   private void executeSchedule(Long scheduleId) {
-    Schedule schedule = scheduleRepository.findById(scheduleId)
-        .orElse(null);
+    Schedule schedule = scheduleRepository.findById(scheduleId).orElse(null);
 
     if (schedule == null) return;
 
-    Actuator actuator = actuatorRepository
-        .findById(schedule.getActuator().getId())
-        .orElse(null);
+    Actuator actuator = actuatorRepository.findById(schedule.getActuator().getId()).orElse(null);
 
     if (actuator == null) return;
 
@@ -73,12 +70,13 @@ public class DynamicScheduleServiceImpl implements DynamicScheduleService {
       return;
     }
 
-    ActuatorMessageEvent event = ActuatorMessageEvent.builder()
-        .deviceId(actuator.getDevice().getId())
-        .actuatorId(actuator.getId())
-        .message(schedule.getAction().name())
-        .timestamp(Instant.now())
-        .build();
+    ActuatorMessageEvent event =
+        ActuatorMessageEvent.builder()
+            .deviceId(actuator.getDevice().getId())
+            .actuatorId(actuator.getId())
+            .message(schedule.getAction().name())
+            .timestamp(Instant.now())
+            .build();
 
     applicationEventPublisher.publishEvent(event);
 
@@ -136,5 +134,4 @@ public class DynamicScheduleServiceImpl implements DynamicScheduleService {
       schedule(s);
     }
   }
-
 }

@@ -9,5 +9,4 @@ public interface InvalidatedTokenRepository extends JpaRepository<InvalidatedTok
   boolean existsByJti(String jti);
 
   void deleteByExpiredAtBefore(Instant time);
-
 }

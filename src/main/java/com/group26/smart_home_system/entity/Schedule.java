@@ -54,5 +54,4 @@ public class Schedule {
 
   @OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<ScheduleDay> days = new ArrayList<>();
-
 }

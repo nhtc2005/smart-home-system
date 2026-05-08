@@ -54,15 +54,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     newUser.setRole(Role.USER);
     userRepository.save(newUser);
 
-    return RegisterResponse.builder()
-        .id(newUser.getId())
-        .build();
+    return RegisterResponse.builder().id(newUser.getId()).build();
   }
 
   @Override
   public LoginResponse login(LoginRequest loginRequest) {
-    User user = userRepository.findByEmail(loginRequest.getEmail())
-        .orElseThrow(() -> new BadCredentialsException(loginFailed));
+    User user =
+        userRepository
+            .findByEmail(loginRequest.getEmail())
+            .orElseThrow(() -> new BadCredentialsException(loginFailed));
 
     boolean passwordMatch = passwordEncoder.matches(loginRequest.getPassword(), user.getPassword());
     if (!passwordMatch) {
@@ -94,9 +94,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
   @Override
   public UserResponse getInfo() throws UnauthorizedException {
     Long userId = currentUser.getUserId();
-    User user = userRepository.findById(userId)
-        .orElseThrow(() -> new UnauthorizedException(userNotFound));
+    User user =
+        userRepository.findById(userId).orElseThrow(() -> new UnauthorizedException(userNotFound));
     return authenticationMapper.toResponse(user);
   }
-
 }

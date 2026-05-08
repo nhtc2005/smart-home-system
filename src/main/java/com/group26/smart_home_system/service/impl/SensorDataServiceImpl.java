@@ -29,8 +29,8 @@ public class SensorDataServiceImpl implements SensorDataService {
 
   @Override
   public SensorDataResponse getLatest(Long sensorId) {
-    SensorData sensorData = sensorDataRepository.findTopBySensorIdOrderByTimestampDesc(sensorId)
-        .orElse(null);
+    SensorData sensorData =
+        sensorDataRepository.findTopBySensorIdOrderByTimestampDesc(sensorId).orElse(null);
     return sensorDataMapper.toResponse(sensorData);
   }
 
@@ -42,7 +42,9 @@ public class SensorDataServiceImpl implements SensorDataService {
 
   @Override
   public Page<SensorDataResponse> getPage(Long sensorId, Pageable pageable) {
-    return sensorDataRepository.findBySensorId(sensorId, pageable).map(sensorDataMapper::toResponse);
+    return sensorDataRepository
+        .findBySensorId(sensorId, pageable)
+        .map(sensorDataMapper::toResponse);
   }
 
   @Override
@@ -60,5 +62,4 @@ public class SensorDataServiceImpl implements SensorDataService {
     sensorData.setValue(sensorDataEvent.getValue());
     sensorDataRepository.save(sensorData);
   }
-
 }

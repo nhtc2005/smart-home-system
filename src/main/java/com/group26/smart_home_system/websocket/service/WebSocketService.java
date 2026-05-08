@@ -15,10 +15,7 @@ public class WebSocketService {
 
   public <T> void pushToUser(Long userId, WebSocketMessage<T> webSocketMessage) {
     try {
-      simpMessagingTemplate.convertAndSend(
-          "/topic/users/" + userId,
-          webSocketMessage
-      );
+      simpMessagingTemplate.convertAndSend("/topic/users/" + userId, webSocketMessage);
 
       log.debug("Sent WebSocket message to userId={}", userId);
 
@@ -26,5 +23,4 @@ public class WebSocketService {
       log.error("Failed to send WebSocket message to userId={}", userId, exception);
     }
   }
-
 }

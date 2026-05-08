@@ -27,11 +27,8 @@ public class ActuatorHandler implements MessageHandler {
     try {
       ActuatorState state = ActuatorState.valueOf(payload);
 
-      ActuatorStateEvent event = new ActuatorStateEvent(
-          feed.getDeviceId(),
-          feed.getIndex(),
-          state,
-          Instant.now());
+      ActuatorStateEvent event =
+          new ActuatorStateEvent(feed.getDeviceId(), feed.getIndex(), state, Instant.now());
 
       applicationEventPublisher.publishEvent(event);
 
@@ -41,5 +38,4 @@ public class ActuatorHandler implements MessageHandler {
       log.error("Failed to handle actuator message: payload={}", payload, exception);
     }
   }
-
 }

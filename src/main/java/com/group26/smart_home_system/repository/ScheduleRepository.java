@@ -11,7 +11,8 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
   List<Schedule> findByActuatorId(Long actuatorId);
 
-  @Query("""
+  @Query(
+      """
       SELECT s FROM Schedule s
       JOIN FETCH s.days
       JOIN FETCH s.actuator a
@@ -19,5 +20,4 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
       WHERE s.time = :time
       """)
   List<Schedule> findByTime(@Param("time") LocalTime time);
-
 }

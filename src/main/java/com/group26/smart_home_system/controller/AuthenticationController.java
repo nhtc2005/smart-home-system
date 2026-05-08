@@ -4,6 +4,7 @@ import com.group26.smart_home_system.dto.auth.*;
 import com.group26.smart_home_system.exception.UnauthorizedException;
 import com.group26.smart_home_system.exception.UserAlreadyExistsException;
 import com.group26.smart_home_system.service.AuthenticationService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,14 +23,14 @@ public class AuthenticationController {
   private final AuthenticationService authenticationService;
 
   @PostMapping("/register")
-  public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest registerRequest)
-      throws UserAlreadyExistsException {
+  public ResponseEntity<RegisterResponse> register(
+      @Valid @RequestBody RegisterRequest registerRequest) throws UserAlreadyExistsException {
     RegisterResponse registerResponse = authenticationService.register(registerRequest);
     return ResponseEntity.status(HttpStatus.CREATED).body(registerResponse);
   }
 
   @PostMapping("/login")
-  public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
+  public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
     LoginResponse loginResponse = authenticationService.login(loginRequest);
     return ResponseEntity.ok(loginResponse);
   }
@@ -43,9 +44,9 @@ public class AuthenticationController {
 
   @PostMapping("/refresh")
   public ResponseEntity<RefreshTokenResponse> refreshToken(
-      @RequestBody RefreshTokenRequest refreshTokenRequest) {
-    RefreshTokenResponse refreshTokenResponse = authenticationService.refreshToken(
-        refreshTokenRequest);
+      @Valid @RequestBody RefreshTokenRequest refreshTokenRequest) {
+    RefreshTokenResponse refreshTokenResponse =
+        authenticationService.refreshToken(refreshTokenRequest);
     return ResponseEntity.ok(refreshTokenResponse);
   }
 
@@ -55,5 +56,4 @@ public class AuthenticationController {
     UserResponse userResponse = authenticationService.getInfo();
     return ResponseEntity.ok(userResponse);
   }
-
 }

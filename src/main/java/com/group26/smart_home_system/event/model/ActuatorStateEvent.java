@@ -16,5 +16,4 @@ public class ActuatorStateEvent {
   private Long actuatorId;
   private ActuatorState actuatorState;
   private Instant timestamp;
-
 }

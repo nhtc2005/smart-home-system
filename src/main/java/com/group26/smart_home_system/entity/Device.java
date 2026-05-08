@@ -46,5 +46,4 @@ public class Device {
 
   @OneToMany(mappedBy = "device", cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<Actuator> actuators = new HashSet<>();
-
 }

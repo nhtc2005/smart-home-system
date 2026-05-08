@@ -7,5 +7,4 @@ public interface MessageHandler {
   boolean canHandle(ParsedFeed parsedFeed);
 
   void handle(ParsedFeed parsedFeed, String payload);
-
 }

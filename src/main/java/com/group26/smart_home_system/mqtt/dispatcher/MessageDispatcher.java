@@ -26,5 +26,4 @@ public class MessageDispatcher {
 
     log.warn("No handler found for feed: {}", feed);
   }
-
 }

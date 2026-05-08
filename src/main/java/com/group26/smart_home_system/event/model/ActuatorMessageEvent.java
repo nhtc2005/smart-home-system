@@ -15,5 +15,4 @@ public class ActuatorMessageEvent {
   private Long actuatorId;
   private String message;
   private Instant timestamp;
-
 }

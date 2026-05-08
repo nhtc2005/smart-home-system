@@ -32,5 +32,4 @@ public class Notification {
   @ManyToOne
   @JoinColumn(name = "device_id")
   private Device device;
-
 }

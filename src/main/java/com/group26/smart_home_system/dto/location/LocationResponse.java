@@ -15,5 +15,4 @@ public class LocationResponse {
   private Long userId;
   private String name;
   private Instant createdAt;
-
 }

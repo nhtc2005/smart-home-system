@@ -22,14 +22,15 @@ public interface ActuatorService {
 
   ActuatorResponse getActuatorById(Long actuatorId) throws ActuatorNotFoundException;
 
-  Page<ActuatorResponse> searchActuators(ActuatorFilterRequest actuatorFilterRequest,
-      Pageable pageable);
+  Page<ActuatorResponse> searchActuators(
+      ActuatorFilterRequest actuatorFilterRequest, Pageable pageable);
 
   ActuatorResponse updateActuator(Long actuatorId, UpdateActuatorRequest updateActuatorRequest)
       throws ActuatorNotFoundException, DeviceNotFoundException;
 
-  ActuatorResponse setActuatorState(Long actuatorId,
-      SetActuatorStateRequest setActuatorStateRequest) throws ActuatorNotFoundException;
+  ActuatorResponse setActuatorState(
+      Long actuatorId, SetActuatorStateRequest setActuatorStateRequest)
+      throws ActuatorNotFoundException;
 
   ActuatorResponse setActuatorState(ActuatorStateEvent actuatorStateEvent);
 
@@ -37,5 +38,4 @@ public interface ActuatorService {
       throws ActuatorNotFoundException;
 
   void deleteActuator(Long actuatorId) throws ActuatorNotFoundException;
-
 }

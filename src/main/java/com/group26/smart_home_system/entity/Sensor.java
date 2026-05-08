@@ -35,5 +35,4 @@ public class Sensor {
 
   @OneToMany(mappedBy = "sensor", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<SensorData> data = new ArrayList<>();
-
 }

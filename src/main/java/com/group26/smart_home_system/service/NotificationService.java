@@ -9,5 +9,4 @@ public interface NotificationService {
   void save(ActuatorStateEvent actuatorStateEvent);
 
   List<NotificationResponse> getAllNotifications();
-
 }

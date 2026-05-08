@@ -16,5 +16,4 @@ public interface SensorDataService {
   Page<SensorDataResponse> getPage(Long sensorId, Pageable pageable);
 
   void save(SensorDataEvent sensorDataEvent);
-
 }

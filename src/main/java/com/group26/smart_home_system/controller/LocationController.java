@@ -8,10 +8,14 @@ import com.group26.smart_home_system.exception.LocationNotFoundException;
 import com.group26.smart_home_system.exception.UserNotFoundException;
 import com.group26.smart_home_system.service.LocationService;
 import java.util.List;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/locations")
 @RequiredArgsConstructor
+@Validated
 public class LocationController {
 
   private final LocationService locationService;
@@ -31,7 +36,8 @@ public class LocationController {
   @PreAuthorize("hasAnyRole('USER')")
   @PostMapping
   public ResponseEntity<LocationResponse> createLocation(
-      @RequestBody CreateLocationRequest createLocationRequest) throws UserNotFoundException {
+      @Valid @RequestBody CreateLocationRequest createLocationRequest)
+      throws UserNotFoundException {
     LocationResponse locationResponse = locationService.createLocation(createLocationRequest);
     return ResponseEntity.status(HttpStatus.CREATED).body(locationResponse);
   }
@@ -45,7 +51,7 @@ public class LocationController {
   @PreAuthorize("hasAnyRole('USER')")
   @GetMapping("/{locationId}")
   public ResponseEntity<LocationDetailedResponse> getLocation(
-      @PathVariable("locationId") Long locationId)
+      @PathVariable("locationId") @Positive(message = "{location.id.invalid}") Long locationId)
       throws LocationNotFoundException {
     return ResponseEntity.ok(locationService.getLocationById(locationId));
   }
@@ -53,19 +59,20 @@ public class LocationController {
   @PreAuthorize("hasAnyRole('USER')")
   @PutMapping("/{locationId}")
   public ResponseEntity<LocationResponse> updateLocation(
-      @PathVariable("locationId") Long locationId,
-      @RequestBody UpdateLocationRequest updateLocationRequest) throws LocationNotFoundException {
-    LocationResponse locationResponse = locationService.updateLocation(locationId,
-        updateLocationRequest);
+      @PathVariable("locationId") @Positive(message = "{location.id.invalid}") Long locationId,
+      @Valid @RequestBody UpdateLocationRequest updateLocationRequest)
+      throws LocationNotFoundException {
+    LocationResponse locationResponse =
+        locationService.updateLocation(locationId, updateLocationRequest);
     return ResponseEntity.ok(locationResponse);
   }
 
   @PreAuthorize("hasAnyRole('USER')")
   @DeleteMapping("/{locationId}")
-  public ResponseEntity<?> deleteLocation(@PathVariable("locationId") Long locationId)
+  public ResponseEntity<?> deleteLocation(
+      @PathVariable("locationId") @Positive(message = "{location.id.invalid}") Long locationId)
       throws LocationNotFoundException {
     locationService.deleteLocation(locationId);
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
-
 }

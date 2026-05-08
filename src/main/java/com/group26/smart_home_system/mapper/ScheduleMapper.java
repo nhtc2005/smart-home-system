@@ -35,16 +35,17 @@ public interface ScheduleMapper {
 
     if (request.getDays() == null || request.getDays().isEmpty()) return;
 
-    List<ScheduleDay> days = request.getDays().stream()
-        .map(day -> {
-          ScheduleDay sd = new ScheduleDay();
-          sd.setDayOfWeek(day);
-          sd.setSchedule(schedule);
-          return sd;
-        })
-        .toList();
+    List<ScheduleDay> days =
+        request.getDays().stream()
+            .map(
+                day -> {
+                  ScheduleDay sd = new ScheduleDay();
+                  sd.setDayOfWeek(day);
+                  sd.setSchedule(schedule);
+                  return sd;
+                })
+            .toList();
 
     schedule.setDays(days);
   }
-
 }

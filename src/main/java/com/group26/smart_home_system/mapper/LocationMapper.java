@@ -24,5 +24,4 @@ public interface LocationMapper {
   LocationDetailedResponse toDetailedResponse(Location location);
 
   List<LocationResponse> toResponseList(List<Location> locationList);
-
 }

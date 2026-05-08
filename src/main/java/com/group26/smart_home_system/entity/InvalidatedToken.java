@@ -22,5 +22,4 @@ public class InvalidatedToken {
 
   @Column(name = "expired_at", nullable = false)
   private Instant expiredAt;
-
 }

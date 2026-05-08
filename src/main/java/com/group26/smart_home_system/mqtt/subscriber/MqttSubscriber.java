@@ -39,24 +39,25 @@ public class MqttSubscriber {
       mqttConnectOptions.setAutomaticReconnect(true);
       mqttConnectOptions.setCleanSession(false);
 
-      mqttClient.setCallback(new MqttCallback() {
+      mqttClient.setCallback(
+          new MqttCallback() {
 
-        @Override
-        public void connectionLost(Throwable cause) {
-          log.warn("MQTT connection lost", cause);
-          retry();
-        }
+            @Override
+            public void connectionLost(Throwable cause) {
+              log.warn("MQTT connection lost", cause);
+              retry();
+            }
 
-        @Override
-        public void messageArrived(String topic, MqttMessage mqttMessage) {
-          handleMessage(topic, mqttMessage);
-        }
+            @Override
+            public void messageArrived(String topic, MqttMessage mqttMessage) {
+              handleMessage(topic, mqttMessage);
+            }
 
-        @Override
-        public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
-          // Not used in subscriber
-        }
-      });
+            @Override
+            public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
+              // Not used in subscriber
+            }
+          });
 
       if (!mqttClient.isConnected()) {
         mqttClient.connect(mqttConnectOptions);
@@ -73,20 +74,22 @@ public class MqttSubscriber {
   }
 
   private void retry() {
-    new Thread(() -> {
-      log.warn("Starting MQTT reconnect loop...");
+    new Thread(
+            () -> {
+              log.warn("Starting MQTT reconnect loop...");
 
-      while (!mqttClient.isConnected()) {
-        try {
-          Thread.sleep(5000);
-          connectAndSubscribe();
-        } catch (Exception exception) {
-          log.error("MQTT reconnect attempt failed", exception);
-        }
-      }
+              while (!mqttClient.isConnected()) {
+                try {
+                  Thread.sleep(5000);
+                  connectAndSubscribe();
+                } catch (Exception exception) {
+                  log.error("MQTT reconnect attempt failed", exception);
+                }
+              }
 
-      log.info("MQTT reconnected successfully");
-    }).start();
+              log.info("MQTT reconnected successfully");
+            })
+        .start();
   }
 
   private void handleMessage(String topic, MqttMessage mqttMessage) {
@@ -129,5 +132,4 @@ public class MqttSubscriber {
       return null;
     }
   }
-
 }

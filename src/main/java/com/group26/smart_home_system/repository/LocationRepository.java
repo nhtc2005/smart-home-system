@@ -11,5 +11,4 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
 
   @EntityGraph(attributePaths = {"devices"})
   Optional<Location> findByIdAndUserId(Long id, Long userId);
-
 }

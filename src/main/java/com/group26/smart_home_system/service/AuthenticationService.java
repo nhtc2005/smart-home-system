@@ -6,14 +6,13 @@ import com.group26.smart_home_system.exception.UserAlreadyExistsException;
 
 public interface AuthenticationService {
 
-    RegisterResponse register(RegisterRequest registerRequest) throws UserAlreadyExistsException;
+  RegisterResponse register(RegisterRequest registerRequest) throws UserAlreadyExistsException;
 
-    LoginResponse login(LoginRequest loginRequest);
+  LoginResponse login(LoginRequest loginRequest);
 
-    void logout();
+  void logout();
 
-    RefreshTokenResponse refreshToken(RefreshTokenRequest refreshTokenRequest);
+  RefreshTokenResponse refreshToken(RefreshTokenRequest refreshTokenRequest);
 
-    UserResponse getInfo() throws UnauthorizedException;
-
+  UserResponse getInfo() throws UnauthorizedException;
 }

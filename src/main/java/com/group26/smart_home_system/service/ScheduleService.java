@@ -14,5 +14,4 @@ public interface ScheduleService {
   List<ScheduleResponse> getScheduleByActuatorId(Long actuatorId) throws ActuatorNotFoundException;
 
   void deleteSchedule(Long scheduleId) throws ScheduleNotFoundException;
-
 }

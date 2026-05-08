@@ -13,5 +13,4 @@ public class ParsedFeed {
   private Long deviceId;
   private String type;
   private Long index;
-
 }

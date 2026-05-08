@@ -7,5 +7,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface CommandLogRepository extends JpaRepository<CommandLog, Long> {
 
   List<CommandLog> findByActuatorId(Long actuatorId);
-
 }

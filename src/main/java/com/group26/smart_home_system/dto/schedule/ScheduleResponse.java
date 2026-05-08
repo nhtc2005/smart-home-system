@@ -24,5 +24,4 @@ public class ScheduleResponse {
   private ActuatorState action;
   private Instant createdAt;
   private Instant lastExecutedAt;
-
 }

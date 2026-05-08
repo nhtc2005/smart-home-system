@@ -22,5 +22,4 @@ public class DeviceDetailedResponse {
   private Instant lastSeen;
   private List<ActuatorResponse> actuators;
   private List<SensorResponse> sensors;
-
 }

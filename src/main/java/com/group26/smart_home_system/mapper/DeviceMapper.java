@@ -9,8 +9,7 @@ import org.mapstruct.*;
 
 @Mapper(
     componentModel = MappingConstants.ComponentModel.SPRING,
-    uses = {ActuatorMapper.class, SensorMapper.class}
-)
+    uses = {ActuatorMapper.class, SensorMapper.class})
 public interface DeviceMapper {
 
   @Mapping(target = "id", ignore = true)
@@ -31,5 +30,4 @@ public interface DeviceMapper {
   DeviceDetailedResponse toDetailedResponse(Device device);
 
   List<DeviceResponse> toResponseList(List<Device> deviceList);
-
 }

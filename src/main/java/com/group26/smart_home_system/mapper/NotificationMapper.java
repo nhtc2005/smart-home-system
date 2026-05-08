@@ -13,5 +13,4 @@ public interface NotificationMapper {
   NotificationResponse toResponse(Notification notification);
 
   List<NotificationResponse> toResponseList(List<Notification> notificationList);
-
 }

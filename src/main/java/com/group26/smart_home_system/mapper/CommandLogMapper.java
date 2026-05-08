@@ -12,5 +12,4 @@ public interface CommandLogMapper {
   CommandLogResponse toResponse(CommandLog commandLog);
 
   List<CommandLogResponse> toResponseList(List<CommandLog> commandLogList);
-
 }

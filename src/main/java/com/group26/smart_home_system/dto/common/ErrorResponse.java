@@ -16,5 +16,4 @@ public class ErrorResponse {
   private HttpStatus error;
   private Integer status;
   private Instant timestamp;
-
 }

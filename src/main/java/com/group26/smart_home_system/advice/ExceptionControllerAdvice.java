@@ -1,23 +1,54 @@
 package com.group26.smart_home_system.advice;
 
 import com.group26.smart_home_system.dto.common.ErrorResponse;
-import com.group26.smart_home_system.exception.ActuatorNotFoundException;
-import com.group26.smart_home_system.exception.DeviceNotFoundException;
-import com.group26.smart_home_system.exception.LocationNotFoundException;
-import com.group26.smart_home_system.exception.ScheduleNotFoundException;
-import com.group26.smart_home_system.exception.SensorNotFoundException;
-import com.group26.smart_home_system.exception.UnauthorizedException;
-import com.group26.smart_home_system.exception.UserAlreadyExistsException;
-import com.group26.smart_home_system.exception.UserNotFoundException;
+import com.group26.smart_home_system.exception.*;
+
 import java.time.Instant;
+import java.util.List;
+
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class ExceptionControllerAdvice {
+
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ResponseEntity<List<ErrorResponse>> handleValidation(
+      MethodArgumentNotValidException exception) {
+
+    List<ErrorResponse> errors =
+        exception.getBindingResult().getFieldErrors().stream()
+            .map(
+                error ->
+                    ErrorResponse.builder()
+                        .message(error.getDefaultMessage())
+                        .error(HttpStatus.BAD_REQUEST)
+                        .status(HttpStatus.BAD_REQUEST.value())
+                        .timestamp(Instant.now())
+                        .build())
+            .toList();
+
+    return ResponseEntity.badRequest().body(errors);
+  }
+
+  @ExceptionHandler(ConstraintViolationException.class)
+  public ResponseEntity<ErrorResponse> ConstraintViolationExceptionHandler(
+      ConstraintViolationException exception) {
+
+    return buildErrorResponse(exception.getMessage(), HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(IllegalArgumentException.class)
+  public ResponseEntity<ErrorResponse> IllegalArgumentExceptionHandler(
+      IllegalArgumentException exception) {
+
+    return buildErrorResponse(exception.getMessage(), HttpStatus.BAD_REQUEST);
+  }
 
   @ExceptionHandler(value = UserAlreadyExistsException.class)
   public ResponseEntity<ErrorResponse> UserAlreadyExistsExceptionHandler(
@@ -41,6 +72,12 @@ public class ExceptionControllerAdvice {
   public ResponseEntity<ErrorResponse> UserNotFoundExceptionHandler(
       UserNotFoundException exception) {
     return buildErrorResponse(exception.getMessage(), HttpStatus.NOT_FOUND);
+  }
+
+  @ExceptionHandler(value = InvalidPasswordException.class)
+  public ResponseEntity<ErrorResponse> InvalidPasswordExceptionHandler(
+      InvalidPasswordException exception) {
+    return buildErrorResponse(exception.getMessage(), HttpStatus.UNAUTHORIZED);
   }
 
   @ExceptionHandler(value = LocationNotFoundException.class)
@@ -79,14 +116,14 @@ public class ExceptionControllerAdvice {
   }
 
   private ResponseEntity<ErrorResponse> buildErrorResponse(String message, HttpStatus status) {
-    ErrorResponse errorResponse = ErrorResponse.builder()
-        .message(message)
-        .error(status)
-        .status(status.value())
-        .timestamp(Instant.now())
-        .build();
+    ErrorResponse errorResponse =
+        ErrorResponse.builder()
+            .message(message)
+            .error(status)
+            .status(status.value())
+            .timestamp(Instant.now())
+            .build();
 
     return ResponseEntity.status(status).body(errorResponse);
   }
-
 }

@@ -7,9 +7,7 @@ public class DeviceSpecification {
 
   public static Specification<Device> hasUser(Long userId) {
     return (root, query, cb) ->
-        userId == null
-            ? cb.conjunction()
-            : cb.equal(root.get("user").get("id"), userId);
+        userId == null ? cb.conjunction() : cb.equal(root.get("user").get("id"), userId);
   }
 
   public static Specification<Device> hasLocation(Long locationId) {
@@ -29,9 +27,7 @@ public class DeviceSpecification {
 
       return cb.or(
           cb.like(cb.lower(root.get("name")), like),
-          cb.like(cb.lower(root.get("deviceCode")), like)
-      );
+          cb.like(cb.lower(root.get("deviceCode")), like));
     };
   }
-
 }

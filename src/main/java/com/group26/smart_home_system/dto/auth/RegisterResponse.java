@@ -11,5 +11,4 @@ import lombok.*;
 public class RegisterResponse {
 
   private Long id;
-
 }

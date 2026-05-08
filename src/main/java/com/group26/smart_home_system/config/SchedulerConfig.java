@@ -16,5 +16,4 @@ public class SchedulerConfig {
     threadPoolTaskScheduler.initialize();
     return threadPoolTaskScheduler;
   }
-
 }

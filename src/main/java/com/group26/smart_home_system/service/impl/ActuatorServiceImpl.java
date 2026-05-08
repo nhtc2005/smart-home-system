@@ -64,8 +64,10 @@ public class ActuatorServiceImpl implements ActuatorService {
 
     Actuator actuator = actuatorMapper.toEntity(request);
 
-    Device device = deviceRepository.findById(request.getDeviceId())
-        .orElseThrow(() -> new DeviceNotFoundException(deviceNotFound));
+    Device device =
+        deviceRepository
+            .findById(request.getDeviceId())
+            .orElseThrow(() -> new DeviceNotFoundException(deviceNotFound));
 
     actuator.setDevice(device);
 
@@ -83,24 +85,24 @@ public class ActuatorServiceImpl implements ActuatorService {
 
   @Override
   public ActuatorResponse getActuatorById(Long actuatorId) throws ActuatorNotFoundException {
-    Actuator actuator = actuatorRepository
-        .findByIdAndUserId(actuatorId, currentUser.getUserId())
-        .orElseThrow(() -> new ActuatorNotFoundException(actuatorNotFound));
+    Actuator actuator =
+        actuatorRepository
+            .findByIdAndUserId(actuatorId, currentUser.getUserId())
+            .orElseThrow(() -> new ActuatorNotFoundException(actuatorNotFound));
 
     return actuatorMapper.toResponse(actuator);
   }
 
   @Override
-  public Page<ActuatorResponse> searchActuators(ActuatorFilterRequest actuatorFilterRequest,
-      Pageable pageable) {
-    Specification<Actuator> spec = Specification
-        .where(hasUser(currentUser.getUserId()))
-        .and(hasDevice(actuatorFilterRequest.getDeviceId()))
-        .and(hasType(actuatorFilterRequest.getType()))
-        .and(searchByKeyword(actuatorFilterRequest.getKeyword()));
+  public Page<ActuatorResponse> searchActuators(
+      ActuatorFilterRequest actuatorFilterRequest, Pageable pageable) {
+    Specification<Actuator> spec =
+        Specification.where(hasUser(currentUser.getUserId()))
+            .and(hasDevice(actuatorFilterRequest.getDeviceId()))
+            .and(hasType(actuatorFilterRequest.getType()))
+            .and(searchByKeyword(actuatorFilterRequest.getKeyword()));
 
-    return actuatorRepository.findAll(spec, pageable)
-        .map(actuatorMapper::toResponse);
+    return actuatorRepository.findAll(spec, pageable).map(actuatorMapper::toResponse);
   }
 
   @Override
@@ -108,13 +110,15 @@ public class ActuatorServiceImpl implements ActuatorService {
   public ActuatorResponse updateActuator(Long actuatorId, UpdateActuatorRequest request)
       throws ActuatorNotFoundException, DeviceNotFoundException {
 
-    Actuator actuator = actuatorRepository
-        .findByIdAndUserId(actuatorId, currentUser.getUserId())
-        .orElseThrow(() -> new ActuatorNotFoundException(actuatorNotFound));
+    Actuator actuator =
+        actuatorRepository
+            .findByIdAndUserId(actuatorId, currentUser.getUserId())
+            .orElseThrow(() -> new ActuatorNotFoundException(actuatorNotFound));
 
-    Device device = deviceRepository
-        .findByIdAndUserId(request.getDeviceId(), currentUser.getUserId())
-        .orElseThrow(() -> new DeviceNotFoundException(deviceNotFound));
+    Device device =
+        deviceRepository
+            .findByIdAndUserId(request.getDeviceId(), currentUser.getUserId())
+            .orElseThrow(() -> new DeviceNotFoundException(deviceNotFound));
 
     actuator.setName(request.getName());
     actuator.setDevice(device);
@@ -124,19 +128,22 @@ public class ActuatorServiceImpl implements ActuatorService {
 
   @Override
   @Transactional
-  public ActuatorResponse setActuatorState(Long actuatorId,
-      SetActuatorStateRequest setActuatorStateRequest) throws ActuatorNotFoundException {
-    Actuator actuator = actuatorRepository
-        .findByIdAndUserId(actuatorId, currentUser.getUserId())
-        .orElseThrow(() -> new ActuatorNotFoundException(actuatorNotFound));
+  public ActuatorResponse setActuatorState(
+      Long actuatorId, SetActuatorStateRequest setActuatorStateRequest)
+      throws ActuatorNotFoundException {
+    Actuator actuator =
+        actuatorRepository
+            .findByIdAndUserId(actuatorId, currentUser.getUserId())
+            .orElseThrow(() -> new ActuatorNotFoundException(actuatorNotFound));
 
     actuator.setState(setActuatorStateRequest.getState());
 
-    ActuatorMessageEvent actuatorMessageEvent = new ActuatorMessageEvent(
-        actuator.getDevice().getId(),
-        actuatorId,
-        setActuatorStateRequest.getState().name(),
-        Instant.now());
+    ActuatorMessageEvent actuatorMessageEvent =
+        new ActuatorMessageEvent(
+            actuator.getDevice().getId(),
+            actuatorId,
+            setActuatorStateRequest.getState().name(),
+            Instant.now());
     applicationEventPublisher.publishEvent(actuatorMessageEvent);
 
     CommandLog commandLog = new CommandLog();
@@ -152,8 +159,8 @@ public class ActuatorServiceImpl implements ActuatorService {
   @Override
   @Transactional
   public ActuatorResponse setActuatorState(ActuatorStateEvent actuatorStateEvent) {
-    Actuator actuator = actuatorRepository.findById(actuatorStateEvent.getActuatorId())
-        .orElseThrow();
+    Actuator actuator =
+        actuatorRepository.findById(actuatorStateEvent.getActuatorId()).orElseThrow();
 
     actuator.setState(actuatorStateEvent.getActuatorState());
     return actuatorMapper.toResponse(actuatorRepository.save(actuator));
@@ -161,11 +168,13 @@ public class ActuatorServiceImpl implements ActuatorService {
 
   @Override
   @Transactional
-  public ActuatorResponse setActuatorMode(Long actuatorId,
-      SetActuatorModeRequest setActuatorModeRequest) throws ActuatorNotFoundException {
-    Actuator actuator = actuatorRepository
-        .findByIdAndUserId(actuatorId, currentUser.getUserId())
-        .orElseThrow(() -> new ActuatorNotFoundException(actuatorNotFound));
+  public ActuatorResponse setActuatorMode(
+      Long actuatorId, SetActuatorModeRequest setActuatorModeRequest)
+      throws ActuatorNotFoundException {
+    Actuator actuator =
+        actuatorRepository
+            .findByIdAndUserId(actuatorId, currentUser.getUserId())
+            .orElseThrow(() -> new ActuatorNotFoundException(actuatorNotFound));
 
     actuator.setMode(setActuatorModeRequest.getMode());
 
@@ -181,10 +190,10 @@ public class ActuatorServiceImpl implements ActuatorService {
   @Override
   @Transactional
   public void deleteActuator(Long actuatorId) throws ActuatorNotFoundException {
-    Actuator actuator = actuatorRepository
-        .findByIdAndUserId(actuatorId, currentUser.getUserId())
-        .orElseThrow(() -> new ActuatorNotFoundException(actuatorNotFound));
+    Actuator actuator =
+        actuatorRepository
+            .findByIdAndUserId(actuatorId, currentUser.getUserId())
+            .orElseThrow(() -> new ActuatorNotFoundException(actuatorNotFound));
     actuatorRepository.delete(actuator);
   }
-
 }

@@ -44,7 +44,6 @@ public class User {
   @CreationTimestamp
   private Instant createdAt;
 
-  @OneToMany(mappedBy="user", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Location> locations = new ArrayList<>();
-
 }

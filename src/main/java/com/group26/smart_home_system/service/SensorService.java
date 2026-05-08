@@ -25,5 +25,4 @@ public interface SensorService {
       throws SensorNotFoundException, DeviceNotFoundException;
 
   void deleteSensor(Long sensorId) throws SensorNotFoundException;
-
 }

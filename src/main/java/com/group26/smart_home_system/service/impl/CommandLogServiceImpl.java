@@ -26,7 +26,8 @@ public class CommandLogServiceImpl implements CommandLogService {
   @Override
   @Transactional
   public void save(ActuatorMessageEvent actuatorMessageEvent) {
-    Actuator actuator = actuatorRepository.findById(actuatorMessageEvent.getActuatorId()).orElse(null);
+    Actuator actuator =
+        actuatorRepository.findById(actuatorMessageEvent.getActuatorId()).orElse(null);
     if (actuator == null) {
       return;
     }
@@ -49,5 +50,4 @@ public class CommandLogServiceImpl implements CommandLogService {
   public List<CommandLogResponse> getCommandLogsByActuatorId(Long actuatorId) {
     return commandLogMapper.toResponseList(commandLogRepository.findByActuatorId(actuatorId));
   }
-
 }

@@ -30,5 +30,4 @@ public interface ActuatorMapper {
   default ActuatorMode defaultMode() {
     return ActuatorMode.MANUAL;
   }
-
 }

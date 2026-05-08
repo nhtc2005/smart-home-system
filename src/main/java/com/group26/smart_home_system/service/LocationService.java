@@ -21,5 +21,4 @@ public interface LocationService {
       throws LocationNotFoundException;
 
   void deleteLocation(Long locationId) throws LocationNotFoundException;
-
 }

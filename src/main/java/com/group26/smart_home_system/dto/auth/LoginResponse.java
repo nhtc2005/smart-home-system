@@ -14,5 +14,4 @@ public class LoginResponse {
   private String token;
   private Instant expiresAt;
   private UserResponse user;
-
 }

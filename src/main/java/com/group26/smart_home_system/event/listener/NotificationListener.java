@@ -18,5 +18,4 @@ public class NotificationListener {
   public void handle(ActuatorStateEvent actuatorStateEvent) {
     notificationService.save(actuatorStateEvent);
   }
-
 }

@@ -30,5 +30,4 @@ public class TokenValidationService {
   public void cleanupExpiredTokens() {
     invalidatedTokenRepository.deleteByExpiredAtBefore(Instant.now());
   }
-
 }

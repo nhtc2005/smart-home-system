@@ -9,17 +9,16 @@ import org.mapstruct.*;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface AuthenticationMapper {
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "password", ignore = true)
-    @Mapping(target = "role", expression = "java(defaultRole())")
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "locations", ignore = true)
-    User toEntity(RegisterRequest registerRequest);
+  @Mapping(target = "id", ignore = true)
+  @Mapping(target = "password", ignore = true)
+  @Mapping(target = "role", expression = "java(defaultRole())")
+  @Mapping(target = "createdAt", ignore = true)
+  @Mapping(target = "locations", ignore = true)
+  User toEntity(RegisterRequest registerRequest);
 
-    UserResponse toResponse(User user);
+  UserResponse toResponse(User user);
 
-    default Role defaultRole() {
-        return Role.USER;
-    }
-
+  default Role defaultRole() {
+    return Role.USER;
+  }
 }
