@@ -17,7 +17,7 @@ public interface DeviceService {
   DeviceResponse createDevice(CreateDeviceRequest createDeviceRequest)
       throws UserNotFoundException, LocationNotFoundException;
 
-  List<DeviceDetailedResponse> getAllDevices();
+  List<DeviceResponse> getAllDevices();
 
   DeviceDetailedResponse getDeviceById(Long deviceId) throws DeviceNotFoundException;
 

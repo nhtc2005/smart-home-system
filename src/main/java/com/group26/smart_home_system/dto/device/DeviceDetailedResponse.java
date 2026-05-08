@@ -15,7 +15,7 @@ import lombok.*;
 public class DeviceDetailedResponse {
 
   private Long id;
-  private String locationName;
+  private Long locationId;
   private String deviceCode;
   private String name;
   private Instant createdAt;

@@ -21,10 +21,10 @@ public interface DeviceMapper {
   @Mapping(target = "actuators", ignore = true)
   Device toEntity(CreateDeviceRequest createDeviceRequest);
 
-  @Mapping(target = "locationName", source = "location.name")
+  @Mapping(target = "locationId", source = "location.id")
   DeviceResponse toResponse(Device device);
 
-  @Mapping(target = "locationName", source = "location.name")
+  @Mapping(target = "locationId", source = "location.id")
   @Mapping(target = "sensors", source = "sensors")
   @Mapping(target = "actuators", source = "actuators")
   DeviceDetailedResponse toDetailedResponse(Device device);
