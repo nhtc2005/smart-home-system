@@ -48,7 +48,7 @@ public class DeviceController {
 
   @PreAuthorize("hasAnyRole('USER')")
   @GetMapping("/all")
-  public ResponseEntity<List<DeviceResponse>> getAllDevices() {
+  public ResponseEntity<List<DeviceDetailedResponse>> getAllDevices() {
     return ResponseEntity.ok(deviceService.getAllDevices());
   }
 

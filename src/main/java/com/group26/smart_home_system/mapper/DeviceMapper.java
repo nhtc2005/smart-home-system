@@ -30,4 +30,6 @@ public interface DeviceMapper {
   DeviceDetailedResponse toDetailedResponse(Device device);
 
   List<DeviceResponse> toResponseList(List<Device> deviceList);
+
+  List<DeviceDetailedResponse> toDetailedResponseList(List<Device> deviceList);
 }

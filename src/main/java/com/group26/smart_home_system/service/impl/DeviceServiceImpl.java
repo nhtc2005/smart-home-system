@@ -69,9 +69,9 @@ public class DeviceServiceImpl implements DeviceService {
   }
 
   @Override
-  public List<DeviceResponse> getAllDevices() {
+  public List<DeviceDetailedResponse> getAllDevices() {
     List<Device> devices = deviceRepository.findByUserId(currentUser.getUserId());
-    return deviceMapper.toResponseList(devices);
+    return deviceMapper.toDetailedResponseList(devices);
   }
 
   @Override
