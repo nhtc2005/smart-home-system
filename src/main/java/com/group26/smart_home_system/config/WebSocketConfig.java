@@ -20,8 +20,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     stompEndpointRegistry
         .addEndpoint("/ws")
         .setAllowedOriginPatterns("*")
-        .addInterceptors(jwtHandshakeInterceptor)
-        .withSockJS();
+        .addInterceptors(jwtHandshakeInterceptor);
   }
 
   @Override
